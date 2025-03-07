@@ -36,9 +36,7 @@ public class ObjectController {
     public ResponseEntity<Object> listarObjetos(@PathVariable String name){
         Object copia = new Object(name, "descripcion");
         return ResponseEntity.ok(this.objectRepository.save(copia));
-        
-        
-        
+
     }
     
 }
