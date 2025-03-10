@@ -1,9 +1,11 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Cliente;
+import com.example.demo.entities.LoginRequest;
 import com.example.demo.entities.Object;
 import com.example.demo.repositories.ClienteRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,20 +14,39 @@ import java.util.List;
 @RequestMapping("/api")
 public class ClienteController {
     private final ClienteRepository clienteRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ClienteController(ClienteRepository clienteRepository) {
+    public ClienteController(ClienteRepository clienteRepository, PasswordEncoder passwordEncoder) {
         this.clienteRepository = clienteRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    //Lista de todos los clientes
     @GetMapping("/clientes")
     public ResponseEntity<List<Cliente>> listarClientes(){
 
         return ResponseEntity.ok(this.clienteRepository.findAll());
 
     }
+    //Creación de cliente
     @PostMapping("/clientes")
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente){
+        cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
         this.clienteRepository.save(cliente);
         return ResponseEntity.ok(cliente);
     }
+
+    //Login del usuario
+    @PostMapping("/clientes/login")
+    public ResponseEntity<Boolean> inicioSesion(@RequestBody LoginRequest loginRequest){
+        if (clienteRepository.findByUsername(loginRequest.getUser()) != null){
+            Cliente cliente = clienteRepository.findByUsername(loginRequest.getUser());
+            String passwordEncript = cliente.getPassword();
+            return ResponseEntity.ok(passwordEncoder.matches(loginRequest.getPassword(), passwordEncript));
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
 }
