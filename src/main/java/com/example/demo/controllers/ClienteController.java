@@ -28,6 +28,13 @@ public class ClienteController {
         return ResponseEntity.ok(this.clienteRepository.findAll());
 
     }
+
+    //Info de cliente
+    @GetMapping("/clientes/{username}")
+    public ResponseEntity<Long> infoCliente(@PathVariable String username){
+        Cliente cliente = clienteRepository.findByUsername(username);
+        return ResponseEntity.ok(cliente.getId());
+    }
     //Creación de cliente
     @PostMapping("/clientes")
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente){
