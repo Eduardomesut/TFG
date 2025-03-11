@@ -1,4 +1,4 @@
-package com.example.demo.entities;
+package com.example.demo.entities.objects;
 //Esta clase esta creada para comprobar la petición de inicio de sesión
 public class LoginRequest {
     private String user;

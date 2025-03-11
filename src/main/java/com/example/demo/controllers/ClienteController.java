@@ -1,8 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Cliente;
-import com.example.demo.entities.LoginRequest;
-import com.example.demo.entities.Object;
+import com.example.demo.entities.profiles.Cliente;
+import com.example.demo.entities.objects.LoginRequest;
 import com.example.demo.repositories.ClienteRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
