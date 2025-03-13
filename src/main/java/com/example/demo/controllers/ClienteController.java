@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.objects.Reserva;
 import com.example.demo.entities.profiles.Cliente;
 import com.example.demo.entities.objects.LoginRequest;
 import com.example.demo.repositories.ClienteRepository;
@@ -33,6 +34,12 @@ public class ClienteController {
     public ResponseEntity<Long> infoCliente(@PathVariable String username){
         Cliente cliente = clienteRepository.findByUsername(username);
         return ResponseEntity.ok(cliente.getId());
+    }
+    //reservas de cliente
+    @GetMapping("/clientes/{username}/reservas")
+    public ResponseEntity<List<Reserva>> reservasCliente(@PathVariable String username){
+        Cliente cliente = clienteRepository.findByUsername(username);
+        return ResponseEntity.ok(cliente.getReservas());
     }
     //Creación de cliente
     @PostMapping("/clientes")

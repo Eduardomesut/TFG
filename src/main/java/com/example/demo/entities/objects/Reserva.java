@@ -3,6 +3,8 @@ package com.example.demo.entities.objects;
 import com.example.demo.entities.places.Habitacion;
 import com.example.demo.entities.places.Hotel;
 import com.example.demo.entities.profiles.Cliente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -17,11 +19,22 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonIgnore
     private Cliente cliente;
 
     @ManyToOne
     @JoinColumn(name = "habitacion_id")
+    @JsonIgnore
     private Habitacion habitacion;
+
+    @JsonProperty("numeroHabitacion")  // Esto hará que aparezca en el JSON
+    public Integer getNumeroHabitacion() {
+        return habitacion != null ? habitacion.getNumber() : null;
+    }
+    @JsonProperty("nombreHotel")  // Esto hará que aparezca en el JSON
+    public String getNombreHotel() {
+        return habitacion != null ? habitacion.getHotel().getName() : null;
+    }
 
     private LocalDate entryDate;
 
@@ -119,5 +132,19 @@ public class Reserva {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{" +
+                "id=" + id +
+                ", cliente=" + cliente.getId() +
+                ", habitacion=" + habitacion.getId() +
+                ", entryDate=" + entryDate +
+                ", exitDate=" + exitDate +
+                ", isPayed=" + isPayed +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

@@ -110,4 +110,19 @@ public class Habitacion {
     public void setNumber(Integer number) {
         this.number = number;
     }
+
+    @Override
+    public String toString() {
+        return "Habitacion{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hotel=" + hotel.getId() +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", reservas=" + reservas +
+                ", isOcupped=" + isOcupped +
+                ", number=" + number +
+                '}';
+    }
 }
