@@ -26,6 +26,9 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Admin> tickets = new ArrayList<Admin>();
 
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Habitacion> habitaciones = new ArrayList<Habitacion>();
+
     public Hotel() {
     }
 
@@ -73,6 +76,15 @@ public class Hotel {
 
     public void setTickets(List<Admin> tickets) {
         this.tickets = tickets;
+    }
+
+
+    public List<Habitacion> getHabitaciones() {
+        return habitaciones;
+    }
+
+    public void setHabitaciones(List<Habitacion> habitaciones) {
+        this.habitaciones = habitaciones;
     }
 
     @Override
