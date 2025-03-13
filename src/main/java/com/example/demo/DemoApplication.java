@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.entities.objects.Reserva;
 import com.example.demo.entities.places.Habitacion;
 import com.example.demo.entities.places.Hotel;
 import com.example.demo.entities.profiles.Admin;
@@ -21,6 +22,7 @@ public class DemoApplication {
 		HotelRepository hotelRepo = context.getBean(HotelRepository.class);
 		AdminRepository adminRepo = context.getBean(AdminRepository.class);
 		HabitacionRepository habitacionRepo = context.getBean(HabitacionRepository.class);
+		ReservaRepository reservaRepo = context.getBean(ReservaRepository.class);
 		Cliente pruebaCliente1 = new Cliente("cliente1", "apellido1", "cliente1", "siis@fdf", LocalDate.now(), 0);
 		Hotel pruebaHotel1 = new Hotel("Palace", "Madrid", 4);
 		Hotel pruebaHotel2 = new Hotel("Hilton", "Paris", 5);
@@ -31,8 +33,11 @@ public class DemoApplication {
 
 		Admin pruebaAdmin1 = new Admin("Admin1", "Admin1", hotelRepo.findById(1L).get(), "admin1", "admin1", "admin@gmail.com");
 		Habitacion pruebaHabitacion1 = new Habitacion("Habitacion Deluxe", hotelRepo.findById(1L).get(), "Basic", 78.5, "Habitación basica", false, 223);
+
 		adminRepo.save(pruebaAdmin1);
 		habitacionRepo.save(pruebaHabitacion1);
+		Reserva pruebaReserva1 = new Reserva(clienteRepo.findById(1L).get(), habitacionRepo.findById(1L).get(), LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 3), false, "Reserva correcta");
+		reservaRepo.save(pruebaReserva1);
 
 
 	}

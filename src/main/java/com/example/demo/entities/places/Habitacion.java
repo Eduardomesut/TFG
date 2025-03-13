@@ -1,6 +1,10 @@
 package com.example.demo.entities.places;
 
+import com.example.demo.entities.objects.Reserva;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "habitaciones")
@@ -21,6 +25,9 @@ public class Habitacion {
     private Double price;
 
     private String description;
+
+    @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Reserva> reservas = new ArrayList<Reserva>();
 
 
     private boolean isOcupped;

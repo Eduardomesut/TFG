@@ -1,8 +1,11 @@
 package com.example.demo.entities.profiles;
 
+import com.example.demo.entities.objects.Reserva;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "clientes")
@@ -17,6 +20,8 @@ public class Cliente {
     private String mail;
     private LocalDate birthdate;
     private Integer points;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Reserva> reservas = new ArrayList<Reserva>();
 
     public Cliente() {
 
@@ -85,6 +90,14 @@ public class Cliente {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
     }
 
     @Override
