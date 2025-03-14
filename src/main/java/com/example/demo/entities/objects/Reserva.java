@@ -58,6 +58,22 @@ public class Reserva {
         this.description = description;
         this.price = calcularPrecio();
     }
+    public Reserva(Habitacion habitacion, LocalDate entryDate, LocalDate exitDate, Boolean isPayed, String description) {
+        this.habitacion = habitacion;
+        this.entryDate = entryDate;
+        this.exitDate = exitDate;
+        this.isPayed = isPayed;
+        this.description = description;
+        this.price = calcularPrecio();
+    }
+
+    public Reserva(LocalDate entryDate, LocalDate exitDate, Boolean isPayed, String description, Double price) {
+        this.entryDate = entryDate;
+        this.exitDate = exitDate;
+        this.isPayed = isPayed;
+        this.description = description;
+        this.price = calcularPrecio();
+    }
 
     private Double calcularPrecio() {
         int diasReserva;
@@ -92,6 +108,7 @@ public class Reserva {
 
     public void setHabitacion(Habitacion habitacion) {
         this.habitacion = habitacion;
+        this.price = calcularPrecio();
     }
 
     public LocalDate getEntryDate() {
