@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.entities.objects.Reserva;
+import com.example.demo.entities.objects.Rewards;
 import com.example.demo.entities.places.Habitacion;
 import com.example.demo.entities.places.Hotel;
 import com.example.demo.entities.profiles.Admin;
@@ -23,6 +24,7 @@ public class DemoApplication {
 		AdminRepository adminRepo = context.getBean(AdminRepository.class);
 		HabitacionRepository habitacionRepo = context.getBean(HabitacionRepository.class);
 		ReservaRepository reservaRepo = context.getBean(ReservaRepository.class);
+		RewardRepository rewardRepo = context.getBean(RewardRepository.class);
 		Cliente pruebaCliente1 = new Cliente("cliente1", "apellido1", "cliente1", "siis@fdf", LocalDate.now(), 0);
 		Hotel pruebaHotel1 = new Hotel("Palace", "Madrid", 4);
 		Hotel pruebaHotel2 = new Hotel("Hilton", "Paris", 5);
@@ -42,6 +44,8 @@ public class DemoApplication {
 		reservaRepo.save(pruebaReserva1);
 		reservaRepo.save(pruebaReserva2);
 		System.out.println(pruebaReserva1);
+		Rewards pruebaReward1 = new Rewards("Viaje gratis", "Viaje muy bueno", 800, 100);
+		rewardRepo.save(pruebaReward1);
 
 	}
 
