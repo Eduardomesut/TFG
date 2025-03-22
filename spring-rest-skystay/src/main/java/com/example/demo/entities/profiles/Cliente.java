@@ -1,6 +1,7 @@
 package com.example.demo.entities.profiles;
 
 import com.example.demo.entities.objects.Reserva;
+import com.example.demo.entities.objects.Rewards;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,8 @@ public class Cliente {
     private Integer points;
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Reserva> reservas = new ArrayList<Reserva>();
+    @ManyToMany
+    private List<Rewards> recompensas = new ArrayList<>();
 
     public Cliente() {
 
@@ -98,6 +101,20 @@ public class Cliente {
 
     public void setReservas(List<Reserva> reservas) {
         this.reservas = reservas;
+    }
+
+    public List<Rewards> getRecompensas() {
+        return recompensas;
+    }
+
+    public void setRecompensas(List<Rewards> recompensas) {
+        this.recompensas = recompensas;
+    }
+
+    public void addRecompensa(Rewards reward){
+        List<Rewards>rewards = this.getRecompensas();
+        rewards.add(reward);
+        this.setRecompensas(rewards);
     }
 
     @Override

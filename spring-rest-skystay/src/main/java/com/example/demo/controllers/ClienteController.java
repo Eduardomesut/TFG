@@ -31,9 +31,9 @@ public class ClienteController {
 
     //Info de cliente
     @GetMapping("/clientes/{username}")
-    public ResponseEntity<Long> infoCliente(@PathVariable String username){
+    public ResponseEntity<Cliente> infoCliente(@PathVariable String username){
         Cliente cliente = clienteRepository.findByUsername(username);
-        return ResponseEntity.ok(cliente.getId());
+        return ResponseEntity.ok(cliente);
     }
     //reservas de cliente
     @GetMapping("/clientes/{username}/reservas")

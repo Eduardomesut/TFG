@@ -1,14 +1,12 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.objects.Reserva;
 import com.example.demo.entities.objects.Rewards;
 import com.example.demo.entities.profiles.Cliente;
 import com.example.demo.repositories.ClienteRepository;
 import com.example.demo.repositories.RewardRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,7 +37,28 @@ public class RewardController {
         return ResponseEntity.ok(reward);
         //Hacer opciones por si no existe etc
     }
+    //Canjear reward
+    @PostMapping("clientes/{clienteId}/reward/{rewardid}")
+    public ResponseEntity<Rewards> canjearReward(@PathVariable Long clienteId,
+                                                 @PathVariable Long rewardid){
 
+        if (clienteRepository.existsById(clienteId) && rewardRepository.existsById(rewardid)){
+            Cliente cliente = clienteRepository.findById(clienteId).get();
+            Rewards reward = rewardRepository.findById(rewardid).get();
+            if (reward.getPoints() <= cliente.getPoints()){
+                cliente.addRecompensa(reward);
+                cliente.setPoints(cliente.getPoints() - reward.getPoints());
+                clienteRepository.save(cliente);
+                reward.setStock(reward.getStock()-1);
+                rewardRepository.save(reward);
+                return ResponseEntity.ok(rewardRepository.findById(reward.getId()).get());
+            }else {
+                return ResponseEntity.badRequest().build();
+            }
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
 
+    }
 
 }
