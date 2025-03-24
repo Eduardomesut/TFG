@@ -4,6 +4,7 @@ import com.example.demo.entities.objects.Reserva;
 import com.example.demo.entities.profiles.Cliente;
 import com.example.demo.entities.objects.LoginRequest;
 import com.example.demo.repositories.ClienteRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,7 @@ public class ClienteController {
             String passwordEncript = cliente.getPassword();
             return ResponseEntity.ok(passwordEncoder.matches(loginRequest.getPassword(), passwordEncript));
         }else{
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
         }
 
     }

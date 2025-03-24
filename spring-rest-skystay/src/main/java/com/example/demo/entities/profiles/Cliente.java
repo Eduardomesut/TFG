@@ -3,6 +3,7 @@ package com.example.demo.entities.profiles;
 import com.example.demo.entities.objects.Reserva;
 import com.example.demo.entities.objects.Rewards;
 import jakarta.persistence.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "clientes")
 public class Cliente {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,6 +10,7 @@ import com.example.demo.repositories.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -25,6 +26,7 @@ public class DemoApplication {
 		HabitacionRepository habitacionRepo = context.getBean(HabitacionRepository.class);
 		ReservaRepository reservaRepo = context.getBean(ReservaRepository.class);
 		RewardRepository rewardRepo = context.getBean(RewardRepository.class);
+
 		Cliente pruebaCliente1 = new Cliente("cliente1", "apellido1", "cliente1", "siis@fdf", LocalDate.now(), 1700);
 		Hotel pruebaHotel1 = new Hotel("Palace", "Madrid", 4);
 		Hotel pruebaHotel2 = new Hotel("Hilton", "Paris", 5);
