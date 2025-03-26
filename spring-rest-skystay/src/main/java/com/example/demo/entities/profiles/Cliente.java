@@ -18,11 +18,12 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true)
     private String username;
     private String password;
     private String mail;
     private LocalDate birthdate;
-    private Integer points;
+    private Integer points = 0;
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Reserva> reservas = new ArrayList<Reserva>();
     @ManyToMany
@@ -39,6 +40,15 @@ public class Cliente {
         this.mail = mail;
         this.birthdate = birthdate;
         this.points = points;
+    }
+
+    public Cliente(String name, String username, String password, String mail, LocalDate birthdate) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.mail = mail;
+        this.birthdate = birthdate;
+        this.points = 0;
     }
 
     public Long getId() {
