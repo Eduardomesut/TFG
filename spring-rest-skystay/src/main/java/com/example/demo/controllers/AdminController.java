@@ -1,13 +1,12 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.objects.LoginRequest;
 import com.example.demo.entities.profiles.Admin;
 import com.example.demo.repositories.AdminRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +25,25 @@ public class AdminController {
     public ResponseEntity<List<Admin>> listarAdministradores(){
         return ResponseEntity.ok(this.adminRepository.findAll());
     }
+    @PostMapping("/administradores/login")
+    public ResponseEntity<Boolean> inicioSesionAdmin(@RequestBody LoginRequest loginRequest){
+        if (adminRepository.findByUsername(loginRequest.getUser()) != null){
+            Admin admin = adminRepository.findByUsername(loginRequest.getUser());
+            String passwordEncript = admin.getPassword();
+            return ResponseEntity.ok(passwordEncoder.matches(loginRequest.getPassword(), passwordEncript));
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+
+        }
+    }
+    @PostMapping
+    public ResponseEntity<Admin> crearAdmin(@RequestBody Admin admin){
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        this.adminRepository.save(admin);
+        return ResponseEntity.ok(admin);
+    }
+
+    //Completar los que faltan
 
 
 }
