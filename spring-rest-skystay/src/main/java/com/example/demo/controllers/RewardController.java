@@ -61,4 +61,35 @@ public class RewardController {
 
     }
 
+    //Crear reward - ONLY ADMIN
+    @PostMapping("/crearRecompensa")
+    public ResponseEntity<Rewards> crearReward(@RequestBody Rewards rewards){
+        Rewards retorno = rewardRepository.save(rewards);
+        return ResponseEntity.ok(retorno);
+    }
+    //update reward - ONLY ADMIN
+    @PutMapping("/updateRecompensa/{id}")
+    public ResponseEntity<Rewards> updateReward(@RequestBody Rewards rewards, @PathVariable Long id){
+        if (rewardRepository.existsById(id)){
+            rewards.setId(id);
+            rewardRepository.save(rewards);
+            return ResponseEntity.ok(rewardRepository.findById(id).get());
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    //Reponer reservas de recompensa - ONLY ADMIN
+    @PutMapping("/updateRecompensa/{id}/{numero}")
+    public ResponseEntity<Rewards> reponerReward(@PathVariable Integer numero, @PathVariable Long id){
+        if (rewardRepository.existsById(id)){
+           Rewards reward = rewardRepository.findById(id).get();
+           reward.setStock(reward.getStock()+numero);
+           rewardRepository.save(reward);
+            return ResponseEntity.ok(rewardRepository.findById(id).get());
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
 }
