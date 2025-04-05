@@ -28,6 +28,14 @@ public class Cliente {
     private List<Reserva> reservas = new ArrayList<Reserva>();
     @ManyToMany
     private List<Rewards> recompensas = new ArrayList<>();
+    // Relación de amigos
+    @ManyToMany
+    @JoinTable(
+            name = "cliente_amigos",
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "amigo_id")
+    )
+    private List<Cliente> amigos = new ArrayList<>();
 
     public Cliente() {
 
@@ -127,6 +135,14 @@ public class Cliente {
         List<Rewards>rewards = this.getRecompensas();
         rewards.add(reward);
         this.setRecompensas(rewards);
+    }
+
+    public List<Cliente> getAmigos() {
+        return amigos;
+    }
+
+    public void setAmigos(List<Cliente> amigos) {
+        this.amigos = amigos;
     }
 
     @Override

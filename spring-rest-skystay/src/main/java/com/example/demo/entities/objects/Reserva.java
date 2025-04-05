@@ -76,13 +76,18 @@ public class Reserva {
     }
 
     private Double calcularPrecio() {
+        double incrementoTemporada = 1;
+
         int diasReserva;
         if (entryDate != null && exitDate != null && !exitDate.isBefore(entryDate)) {
             diasReserva = (int) ChronoUnit.DAYS.between(entryDate, exitDate);
+            if (entryDate.isAfter(LocalDate.of(entryDate.getYear(), 6, 15)) && exitDate.isBefore(LocalDate.of(entryDate.getYear(), 9, 15))) {
+                incrementoTemporada = 1.5;
+            }
         } else {
             throw new IllegalArgumentException("Las fechas no son válidas.");
         }
-        return diasReserva * this.habitacion.getPrice();
+        return diasReserva * (this.habitacion.getPrice() * incrementoTemporada);
 
     }
 
