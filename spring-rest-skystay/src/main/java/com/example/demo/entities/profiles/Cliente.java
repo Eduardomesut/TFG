@@ -37,6 +37,10 @@ public class Cliente {
     )
     private List<Cliente> amigos = new ArrayList<>();
 
+    //CORREGIR LO DEL VERIFICADO
+    private boolean isVerified = false;
+    private String verificationToken;
+
     public Cliente() {
 
     }
@@ -48,6 +52,7 @@ public class Cliente {
         this.mail = mail;
         this.birthdate = birthdate;
         this.points = points;
+        this.isVerified = false;
     }
 
     public Cliente(String name, String username, String password, String mail, LocalDate birthdate) {
@@ -143,6 +148,22 @@ public class Cliente {
 
     public void setAmigos(List<Cliente> amigos) {
         this.amigos = amigos;
+    }
+
+    public boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(boolean ifVerified) {
+        this.isVerified = ifVerified;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
     }
 
     @Override

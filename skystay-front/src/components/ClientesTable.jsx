@@ -36,6 +36,7 @@ function ClientesTable() {
             <th>Nombre</th>
             <th>Email</th>
             <th>Usuario</th>
+            <th>Cuenta verificada</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +46,7 @@ function ClientesTable() {
               <td>{cliente.name}</td>
               <td>{cliente.mail}</td>
               <td>{cliente.username}</td>
+              <td>{cliente.ifVerified}</td>
             </tr>
           ))}
         </tbody>

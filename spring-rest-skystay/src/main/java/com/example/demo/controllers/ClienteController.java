@@ -4,22 +4,27 @@ import com.example.demo.entities.objects.Reserva;
 import com.example.demo.entities.profiles.Cliente;
 import com.example.demo.entities.objects.LoginRequest;
 import com.example.demo.repositories.ClienteRepository;
+import com.example.demo.utils.MailAPI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
 public class ClienteController {
     private final ClienteRepository clienteRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailAPI mailAPI;
 
-    public ClienteController(ClienteRepository clienteRepository, PasswordEncoder passwordEncoder) {
+    public ClienteController(ClienteRepository clienteRepository, PasswordEncoder passwordEncoder, MailAPI mailAPI) {
         this.clienteRepository = clienteRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mailAPI = mailAPI;
     }
 
     //Lista de todos los clientes
@@ -46,8 +51,29 @@ public class ClienteController {
     @PostMapping("/clientes")
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente){
         cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
-        this.clienteRepository.save(cliente);
+        this.mailAPI.enviarCorreoVerificacion(cliente);
+       //this.clienteRepository.save(cliente);
         return ResponseEntity.ok(cliente);
+
+
+        //CORREGIR LO DEL VERIFICADO
+
+
+    }
+
+    @GetMapping("/api/verificar/{token}")
+    public ResponseEntity<String> verificarCuenta(@PathVariable String token) {
+        Optional<Cliente> optional = clienteRepository.findByVerificationToken(token);
+        if (optional != null) {
+            Cliente cliente = optional.get();
+            cliente.setIsVerified(true);
+            System.out.println(cliente.getIsVerified());
+            cliente.setVerificationToken(null); // opcional: eliminar token
+            clienteRepository.save(cliente);
+            return ResponseEntity.ok("Cuenta verificada correctamente");
+        } else {
+            return ResponseEntity.badRequest().body("Token inválido o expirado");
+        }
     }
 
     //Login del usuario
