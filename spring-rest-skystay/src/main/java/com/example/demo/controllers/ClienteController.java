@@ -89,6 +89,26 @@ public class ClienteController {
 
     }
 
+    //Añadir un amigo ----- FALTA COMPROBAR SI ESTA BIEN
+    @PutMapping("/clientes/{id}/amigo/{username}")
+    public ResponseEntity<Cliente> insertarAmigo(@PathVariable String username, @PathVariable Long id){
+        if ((clienteRepository.findByUsername(username) != null) && (clienteRepository.findById(id) != null)) {
+            Cliente guardar = clienteRepository.findById(id).get();
+            Cliente nuevo = clienteRepository.findByUsername(username);
+            List<Cliente> amigos = guardar.getAmigos();
+            amigos.add(nuevo);
+            guardar.setAmigos(amigos);
+            clienteRepository.save(guardar);
+            return ResponseEntity.ok(guardar);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
+
+
+
     //Completar los que faltan
 
 }
