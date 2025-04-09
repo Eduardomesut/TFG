@@ -5,7 +5,6 @@ function ClientesTable() {
   const [reservas, setReservas] = useState([]);
   const [username, setUsername] = useState("");
 
-  // Cargar clientes al inicio
   useEffect(() => {
     fetch("http://localhost:8080/api/clientes")
       .then((response) => response.json())
@@ -13,7 +12,6 @@ function ClientesTable() {
       .catch((error) => console.error("Error al cargar clientes:", error));
   }, []);
 
-  // Función para obtener reservas por usuario
   const buscarReservas = () => {
     if (!username) {
       alert("Por favor, ingresa un nombre de usuario");
@@ -27,63 +25,102 @@ function ClientesTable() {
   };
 
   return (
-    <div>
-      <h1>Lista de Clientes</h1>
-      <table border="1">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Usuario</th>
-            <th>Cuenta verificada</th>
-          </tr>
-        </thead>
-        <tbody>
-          {clientes.map((cliente) => (
-            <tr key={cliente.id}>
-              <td>{cliente.id}</td>
-              <td>{cliente.name}</td>
-              <td>{cliente.mail}</td>
-              <td>{cliente.username}</td>
-              <td>{cliente.isVerified}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <h2>Buscar Reservas</h2>
-      <input
-        type="text"
-        placeholder="Escribe el usuario"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <button onClick={buscarReservas}>Buscar Reservas</button>
-
-      {reservas.length > 0 && (
-        <div>
-          <h2>Reservas de {username}</h2>
-          <table border="1">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Número habitación</th>
-                <th>Nombre hotel</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reservas.map((reserva) => (
-                <tr key={reserva.id}>
-                  <td>{reserva.id}</td>
-                  <td>{reserva.numeroHabitacion}</td>
-                  <td>{reserva.nombreHotel}</td>
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-gray-200 p-6 font-sans">
+      <div className="max-w-6xl mx-auto space-y-12">
+        {/* Clientes */}
+        <div className="bg-white shadow-2xl rounded-2xl overflow-hidden">
+          <div className="bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-300 p-6">
+            <h1 className="text-4xl font-bold text-white text-center tracking-wide">
+              Lista de Clientes
+            </h1>
+          </div>
+          <div className="overflow-x-auto p-6">
+            <table className="w-full table-auto border-collapse text-sm">
+              <thead>
+                <tr className="bg-yellow-100 text-yellow-900 uppercase text-xs">
+                  <th className="px-6 py-3 border-b border-yellow-200">ID</th>
+                  <th className="px-6 py-3 border-b border-yellow-200">Nombre</th>
+                  <th className="px-6 py-3 border-b border-yellow-200">Email</th>
+                  <th className="px-6 py-3 border-b border-yellow-200">Usuario</th>
+                  <th className="px-6 py-3 border-b border-yellow-200">Cuenta Verificada</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="text-gray-700">
+                {clientes.map((cliente, index) => (
+                  <tr
+                    key={cliente.id}
+                    className={`${
+                      index % 2 === 0 ? "bg-white" : "bg-yellow-50"
+                    } hover:bg-yellow-100 transition-colors`}
+                  >
+                    <td className="px-6 py-3 border-b">{cliente.id}</td>
+                    <td className="px-6 py-3 border-b">{cliente.name}</td>
+                    <td className="px-6 py-3 border-b">{cliente.mail}</td>
+                    <td className="px-6 py-3 border-b">{cliente.username}</td>
+                    <td className="px-6 py-3 border-b">
+                      {cliente.isVerified ? "Sí" : "No"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      )}
+
+        {/* Buscar reservas */}
+        <div className="bg-white shadow-xl rounded-xl p-6 space-y-4">
+          <h2 className="text-2xl font-semibold text-yellow-700 text-center">Buscar Reservas</h2>
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+            <input
+              type="text"
+              placeholder="Nombre de usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 w-full sm:w-1/3"
+            />
+            <button
+              onClick={buscarReservas}
+              className="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition"
+            >
+              Buscar Reservas
+            </button>
+          </div>
+        </div>
+
+        {/* Tabla de reservas */}
+        {reservas.length > 0 && (
+          <div className="bg-white shadow-xl rounded-xl p-6">
+            <h2 className="text-2xl font-semibold text-yellow-700 text-center mb-4">
+              Reservas de <span className="font-bold">{username}</span>
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full table-auto border-collapse text-sm">
+                <thead>
+                  <tr className="bg-yellow-100 text-yellow-900 uppercase text-xs">
+                    <th className="px-6 py-3 border-b border-yellow-200">ID</th>
+                    <th className="px-6 py-3 border-b border-yellow-200">Habitación</th>
+                    <th className="px-6 py-3 border-b border-yellow-200">Hotel</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-700">
+                  {reservas.map((reserva, index) => (
+                    <tr
+                      key={reserva.id}
+                      className={`${
+                        index % 2 === 0 ? "bg-white" : "bg-yellow-50"
+                      } hover:bg-yellow-100 transition-colors`}
+                    >
+                      <td className="px-6 py-3 border-b">{reserva.id}</td>
+                      <td className="px-6 py-3 border-b">{reserva.numeroHabitacion}</td>
+                      <td className="px-6 py-3 border-b">{reserva.nombreHotel}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

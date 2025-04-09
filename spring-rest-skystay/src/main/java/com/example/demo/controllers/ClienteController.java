@@ -52,6 +52,7 @@ public class ClienteController {
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente){
         cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
         this.mailAPI.enviarCorreoVerificacion(cliente);
+        cliente.setVerified(false);
        //this.clienteRepository.save(cliente);
         return ResponseEntity.ok(cliente);
 
@@ -64,10 +65,10 @@ public class ClienteController {
     @GetMapping("/api/verificar/{token}")
     public ResponseEntity<String> verificarCuenta(@PathVariable String token) {
         Optional<Cliente> optional = clienteRepository.findByVerificationToken(token);
-        if (optional != null) {
+        if (optional.isPresent()) {
             Cliente cliente = optional.get();
-            cliente.setIsVerified(true);
-            System.out.println(cliente.getIsVerified());
+            cliente.setVerified(true);
+
             cliente.setVerificationToken(null); // opcional: eliminar token
             clienteRepository.save(cliente);
             return ResponseEntity.ok("Cuenta verificada correctamente");

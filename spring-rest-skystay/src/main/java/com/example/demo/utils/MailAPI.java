@@ -60,7 +60,7 @@ public class MailAPI {
     public void enviarCorreoVerificacion(Cliente cliente) {
         String token = UUID.randomUUID().toString();
         cliente.setVerificationToken(token);
-        cliente.setIsVerified(false);
+        cliente.setVerified(false);
         String link = "http://localhost:5173/api/verificar/" + token;
         String mensaje = "Haz clic en el siguiente enlace para verificar tu cuenta:\n" + link;
         sendVerificationEmail(cliente.getMail(), mensaje);
