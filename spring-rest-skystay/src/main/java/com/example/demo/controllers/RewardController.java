@@ -5,10 +5,13 @@ import com.example.demo.entities.objects.Rewards;
 import com.example.demo.entities.profiles.Cliente;
 import com.example.demo.repositories.ClienteRepository;
 import com.example.demo.repositories.RewardRepository;
+import com.example.demo.utils.MailAPI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
@@ -16,10 +19,12 @@ public class RewardController {
 
     private final ClienteRepository clienteRepository;
     private final RewardRepository rewardRepository;
+    private final MailAPI mailAPI;
 
-    public RewardController(ClienteRepository clienteRepository, RewardRepository rewardRepository) {
+    public RewardController(ClienteRepository clienteRepository, RewardRepository rewardRepository, MailAPI mailAPI) {
         this.clienteRepository = clienteRepository;
         this.rewardRepository = rewardRepository;
+        this.mailAPI = mailAPI;
     }
 
     //Lista de todos las rewards
@@ -45,11 +50,14 @@ public class RewardController {
         if (clienteRepository.existsById(clienteId) && rewardRepository.existsById(rewardid)){
             Cliente cliente = clienteRepository.findById(clienteId).get();
             Rewards reward = rewardRepository.findById(rewardid).get();
-            if (reward.getPoints() <= cliente.getPoints()){
+            // Ver si hay stock y enviar correo
+            if (reward.getPoints() <= cliente.getPoints() && reward.getStock() > 0){
                 cliente.addRecompensa(reward);
                 cliente.setPoints(cliente.getPoints() - reward.getPoints());
                 clienteRepository.save(cliente);
                 reward.setStock(reward.getStock()-1);
+                String codigoAleatorio = UUID.randomUUID().toString().substring(0, 8);
+                mailAPI.sendCodeRedeemedEmail(cliente.getMail(), codigoAleatorio);
                 rewardRepository.save(reward);
                 return ResponseEntity.ok(rewardRepository.findById(reward.getId()).get());
             }else {

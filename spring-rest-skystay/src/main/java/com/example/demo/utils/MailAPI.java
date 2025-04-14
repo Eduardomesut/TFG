@@ -44,7 +44,7 @@ public class MailAPI {
         message.setFrom(fromEmail);
         message.setTo(to);
         message.setSubject("Código canjeado");
-        message.setText("Has canjeado correctamente el código: " + code);
+        message.setText("Has canjeado correctamente el la recompensa! Aqui tiene su código para canjearla: " + code);
         mailSender.send(message);
     }
 
