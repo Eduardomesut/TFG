@@ -67,7 +67,7 @@ public class ReservaController {
         return ResponseEntity.ok(nuevaReserva);
     }
     //Borrar reserva
-    @DeleteMapping("clientes/reserva/{id}")
+    @DeleteMapping("clientes/reserva/borrar/{id}")
     public ResponseEntity<String> eliminarReserva(@PathVariable Long id) {
         if (reservaRepository.existsById(id)) {
             reservaRepository.deleteById(id);
@@ -77,7 +77,36 @@ public class ReservaController {
     }
 
     //Modificar reserva
+    @PutMapping("clientes/reserva/modificar/{id}")
+    public ResponseEntity<Reserva> modificarReserva(@PathVariable Long id, @RequestBody Reserva reserva) {
+        if (reservaRepository.existsById(id)) {
+            reserva.setId(id);
+            reservaRepository.save(reserva);
+            return ResponseEntity.ok(reserva);
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
+    //Pagar reserva con sueldo
+    @PutMapping("clientes/reserva/pagar/{id}")
+    public ResponseEntity<Reserva> pagarReserva(@PathVariable Long id){
+        if (reservaRepository.existsById(id)) {
+            Cliente propietario = clienteRepository.findById(id).get();
+            Reserva reservaPropi = reservaRepository.findById(id).get();
+            if (propietario.getSueldo() >= reservaPropi.getPrice()) {
+                reservaPropi.setPayed(true);
+                propietario.setSueldo(propietario.getSueldo() - reservaPropi.getPrice());
+                clienteRepository.save(propietario);
+                reservaRepository.save(reservaPropi);
+                return ResponseEntity.ok(reservaPropi);
+            }else {
+                return ResponseEntity.badRequest().build();
+            }
+        }else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
 
 

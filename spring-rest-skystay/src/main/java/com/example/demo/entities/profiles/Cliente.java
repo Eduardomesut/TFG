@@ -24,6 +24,7 @@ public class Cliente {
     private String mail;
     private LocalDate birthdate;
     private Integer points = 0;
+    private Double sueldo = 0.0;
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Reserva> reservas = new ArrayList<Reserva>();
     @ManyToMany
@@ -52,6 +53,8 @@ public class Cliente {
         this.mail = mail;
         this.birthdate = birthdate;
         this.points = points;
+        this.verified = false;
+        this.sueldo = 0.0;
     }
 
     public Cliente(String name, String username, String password, String mail, LocalDate birthdate) {
@@ -163,6 +166,18 @@ public class Cliente {
 
     public void setVerificationToken(String verificationToken) {
         this.verificationToken = verificationToken;
+    }
+
+    public Double getSueldo() {
+        return sueldo;
+    }
+
+    public void setSueldo(Double sueldo) {
+        this.sueldo = sueldo;
+    }
+
+    public boolean isVerified() {
+        return verified;
     }
 
     @Override
