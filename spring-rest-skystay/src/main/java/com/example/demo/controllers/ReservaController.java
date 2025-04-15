@@ -66,6 +66,19 @@ public class ReservaController {
                 ", Día de entrada: " + reserva.getEntryDate() + ", Día de salida: " + reserva.getExitDate());
         return ResponseEntity.ok(nuevaReserva);
     }
+    //Borrar reserva
+    @DeleteMapping("clientes/reserva/{id}")
+    public ResponseEntity<String> eliminarReserva(@PathVariable Long id) {
+        if (reservaRepository.existsById(id)) {
+            reservaRepository.deleteById(id);
+            return ResponseEntity.ok("Reserva eliminada");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    //Modificar reserva
+
+
 
 
 }
