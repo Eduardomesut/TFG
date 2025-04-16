@@ -1,35 +1,22 @@
-import { useState } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
 import Login from "./components/Login";
-import Signin from "./components/Signin";
-import ClientesTable from "./components/ClientesTable";
-import LoginAdmin from "./components/LoginAdmin";
-import AdminPage from "./components/AdminPage";
+import Register from "./components/Register";
+import Profile from "./components/Profile";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = React.useState(null);
 
   return (
-    <div>
-      {!user ? (
-        isAdmin ? (
-          <LoginAdmin onLogin={(admin) => { setUser(admin); setIsAdmin(true); }} onCancel={() => setIsAdmin(false)} />
-        ) : isRegistering ? (
-          <Signin onSignin={() => setIsRegistering(false)} />
-        ) : (
-          <>
-            <Login onLogin={setUser} />
-            <button onClick={() => setIsRegistering(true)}>Registro</button>
-            <button onClick={() => setIsAdmin(true)}>Administrador</button>
-          </>
-        )
-      ) : isAdmin ? (
-        <AdminPage />
-      ) : (
-        <ClientesTable />
-      )}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={user ? <Profile user={user} /> : <Login setUser={setUser} />} />
+      </Routes>
+    </Router>
   );
 }
 

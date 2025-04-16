@@ -1,50 +1,62 @@
 import { useState } from "react";
 
-function Signin({ onSignin }) {
-  const [username, setUser] = useState("");
+function Register() {
+  const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [mail, setMail] = useState("");
   const [birthdate, setBirthdate] = useState("");
-  const [userType, setUserType] = useState("cliente"); // Valor por defecto
+  const [userType, setUserType] = useState("cliente");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const handleSignin = async () => {
+  const handleRegister = async () => {
     try {
-      const formattedBirthdate = birthdate ? new Date(birthdate).toISOString().split("T")[0] : "";
-      const apiUrl = userType === "administrador" ? "http://localhost:8080/api/administradores" : "http://localhost:8080/api/clientes";
+      const formattedBirthdate = birthdate
+        ? new Date(birthdate).toISOString().split("T")[0]
+        : "";
+
+      const apiUrl =
+        userType === "administrador"
+          ? "http://localhost:8080/api/administradores"
+          : "http://localhost:8080/api/clientes";
 
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, username, password, mail, birthdate: formattedBirthdate }),
+        body: JSON.stringify({
+          username,
+          name,
+          password,
+          mail,
+          birthdate: formattedBirthdate,
+        }),
       });
 
       if (!response.ok) {
         throw new Error("Error en la introducción de datos");
       }
 
-      const userData = await response.json();
-      if (userData) {
-        onSignin(userData); // Guarda el usuario y cambia a la vista de clientes/administradores
-      } else {
-        throw new Error("Error al procesar la respuesta del servidor");
-      }
+      setSuccess(true);
+      setError("");
     } catch (err) {
       setError(err.message);
+      setSuccess(false);
     }
   };
 
   return (
-    <div>
+    <div className="register-form">
       <h2>Registro</h2>
+
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>Registro completado con éxito</p>}
 
       <input
         type="text"
         placeholder="Usuario"
         value={username}
-        onChange={(e) => setUser(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <input
         type="text"
@@ -82,9 +94,9 @@ function Signin({ onSignin }) {
         </select>
       </div>
 
-      <button onClick={handleSignin}>Registrarse</button>
+      <button onClick={handleRegister}>Registrarse</button>
     </div>
   );
 }
 
-export default Signin;
+export default Register;

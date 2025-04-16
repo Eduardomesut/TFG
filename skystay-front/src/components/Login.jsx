@@ -1,51 +1,37 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Login({ onLogin }) {
-  const [user, setUser] = useState(""); // Corregido: nombre coherente
+function Login({ setUser }) {
+  const [user, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/clientes/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user, password }), // Cambié "user" por "username"
-      });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:8080/api/clientes/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user, password }),
+    });
 
-      if (!response.ok) {
-        throw new Error("Usuario o contraseña incorrectos");
-      }
-
-      const userData = await response.json(); // Cambié el nombre de la variable
-      if (userData) {
-        onLogin(userData); // Guarda el usuario y cambia a la vista de clientes
-      } else {
-        throw new Error("Error al procesar la respuesta del servidor");
-      }
-    } catch (err) {
-      setError(err.message);
+    const success = await response.json();
+    if (success) {
+      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userJson = await userData.json();
+      setUser(userJson);
+      navigate("/profile");
+    } else {
+      alert("Credenciales incorrectas");
     }
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <h2>Iniciar Sesión</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input
-        type="text"
-        placeholder="Usuario"
-        value={user}
-        onChange={(e) => setUser(e.target.value)} // Corregido: setUser en lugar de setUsername
-      />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Ingresar</button>
-    </div>
+      <input placeholder="Usuario" value={user} onChange={(e) => setUsername(e.target.value)} />
+      <input placeholder="Contraseña" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <button type="submit">Entrar</button>
+    </form>
   );
 }
 
