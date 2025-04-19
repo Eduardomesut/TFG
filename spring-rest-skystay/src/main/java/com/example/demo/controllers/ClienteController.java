@@ -106,6 +106,31 @@ public class ClienteController {
         }
 
     }
+    //Eliminar un amigo ----- FALTA COMPROBAR SI ESTA BIEN
+    @DeleteMapping("/clientes/{id}/amigo/{username}/delete")
+    public Boolean eliminarAmigo(@PathVariable String username, @PathVariable Long id){
+        if ((clienteRepository.findByUsername(username) != null) && (clienteRepository.findById(id) != null)) {
+            Cliente guardar = clienteRepository.findById(id).get();
+            Cliente nuevo = clienteRepository.findByUsername(username);
+            List<Cliente> amigos = guardar.getAmigos();
+            if (amigos.contains(nuevo)) {
+                amigos.remove(nuevo);
+                guardar.setAmigos(amigos);
+                clienteRepository.save(guardar);
+                return true;
+            }
+            return false;
+
+        }else {
+            return false;
+        }
+    }
+    //Añadir sueldo a cliente
+
+
+
+
+
 
 
 
