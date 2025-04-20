@@ -125,15 +125,21 @@ public class ClienteController {
             return false;
         }
     }
-    //Añadir sueldo a cliente
+    //Añadir o retirar sueldo a cliente -- FALTA COMPROBAR
+    @PutMapping("/clientes/{id}/saldo/{mas}")
+    public ResponseEntity<Cliente> saldoCliente(@PathVariable Long id, @PathVariable Double mas){
+        if (clienteRepository.existsById(id)){
+            Cliente modificar = clienteRepository.findById(id).get();
+            Double sueldo = modificar.getSueldo();
+            modificar.setSueldo(sueldo + mas);
+            clienteRepository.save(modificar);
+            return ResponseEntity.ok(modificar);
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 
-
-
-
-
-
-
-
+    //MAS ACCIONES A realizar DE CLIENTE
 
     //Completar los que faltan
 
