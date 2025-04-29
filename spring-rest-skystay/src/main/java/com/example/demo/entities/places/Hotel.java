@@ -1,6 +1,7 @@
 package com.example.demo.entities.places;
 
 import com.example.demo.entities.profiles.Admin;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -24,9 +25,11 @@ public class Hotel {
     //y mas atributos necesarios del hotel
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Admin> tickets = new ArrayList<Admin>();
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Habitacion> habitaciones = new ArrayList<Habitacion>();
 
     public Hotel() {
