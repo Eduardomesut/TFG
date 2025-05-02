@@ -5,6 +5,9 @@ function Profile({ user }) {
   const [hoteles, setHoteles] = useState([]);
   const [hotelSeleccionado, setHotelSeleccionado] = useState(null);
   const [habitaciones, setHabitaciones] = useState([]);
+  const [habitacionSeleccionada, setHabitacionSeleccionada] = useState(null);
+  const [fechaIngreso, setFechaIngreso] = useState("");
+
 
   useEffect(() => {
     const fetchReservas = async () => {
@@ -87,6 +90,22 @@ function Profile({ user }) {
 
       <h2>Bienvenido, {user.username}</h2>
       <p>Email: {user.mail}</p>
+      <p>Puntos: {user.points}</p>
+      <button
+  onClick={() => window.location.href = "/canjear"}
+  style={{
+    padding: "0.5rem 1rem",
+    backgroundColor: "#2980b9",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginBottom: "1rem"
+  }}
+>
+  Canjear Recompensa
+</button>
+
 
       <div className="section">
         <h3>Selecciona un hotel:</h3>
@@ -102,17 +121,52 @@ function Profile({ user }) {
         <div className="section">
           <h3>Habitaciones disponibles:</h3>
           <ul>
-            {habitaciones.length > 0 ? (
-              habitaciones.map((hab, idx) => (
-                <li key={idx}>
-                  {JSON.stringify(hab)}
-                  Tipo: {hab.type} | Precio: {hab.price}€ | Descripción: {hab.description}
-                </li>
-              ))
-            ) : (
-              <li>No hay habitaciones disponibles para este hotel.</li>
-            )}
+          {habitaciones.length > 0 ? (
+  habitaciones.map((hab, idx) => (
+    <li key={idx}>
+      <button
+        onClick={() => setHabitacionSeleccionada(hab)}
+        style={{
+          backgroundColor: "#1abc9c",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          padding: "0.5rem",
+          cursor: "pointer",
+          width: "100%",
+          textAlign: "left"
+        }}
+      >
+        Tipo: {hab.type} | Precio: {hab.price}€ | Descripción: {hab.description}
+      </button>
+    </li>
+  ))
+) : (
+  <li>No hay habitaciones disponibles para este hotel.</li>
+)}
+
           </ul>
+          {habitacionSeleccionada && (
+  <div className="section">
+    <h3>Seleccionaste la habitación: {habitacionSeleccionada.type}</h3>
+    <label htmlFor="fecha">Selecciona la fecha de ingreso:</label>
+    <input
+      type="date"
+      id="fecha"
+      value={fechaIngreso}
+      onChange={(e) => setFechaIngreso(e.target.value)}
+      style={{
+        padding: "0.5rem",
+        marginTop: "0.5rem",
+        fontSize: "1rem",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        display: "block"
+      }}
+    />
+  </div>
+)}
+
         </div>
       )}
 

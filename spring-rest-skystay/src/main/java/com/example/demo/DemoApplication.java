@@ -38,9 +38,11 @@ public class DemoApplication {
 		Admin pruebaAdmin1 = new Admin("Admin1", "Admin1", hotelRepo.findById(1L).get(), "admin1", "admin1", "admin@gmail.com");
 		Habitacion pruebaHabitacion1 = new Habitacion("Habitacion Deluxe", hotelRepo.findById(1L).get(), "Basic", 78.5, "Habitación basica", false, 223);
 		Habitacion pruebaHabitacion2 = new Habitacion("Habitacion Premium", hotelRepo.findById(2L).get(), "Basic", 100.5, "Habitación total", false, 113);
+		Habitacion pruebaHabitacion3 = new Habitacion("Habitacion Individual", hotelRepo.findById(1L).get(), "Basic", 62.5, "Habitación basica individual", false, 225);
 		adminRepo.save(pruebaAdmin1);
 		habitacionRepo.save(pruebaHabitacion1);
 		habitacionRepo.save(pruebaHabitacion2);
+		habitacionRepo.save(pruebaHabitacion3);
 		Reserva pruebaReserva1 = new Reserva(clienteRepo.findById(1L).get(), habitacionRepo.findById(1L).get(), LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 3), false, "Reserva correcta");
 		Reserva pruebaReserva2 = new Reserva(clienteRepo.findById(1L).get(), habitacionRepo.findById(2L).get(), LocalDate.of(2024, 3, 1), LocalDate.of(2024, 3, 3), false, "Reserva correcta");
 		reservaRepo.save(pruebaReserva1);
