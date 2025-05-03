@@ -7,6 +7,8 @@ function Profile({ user }) {
   const [habitaciones, setHabitaciones] = useState([]);
   const [habitacionSeleccionada, setHabitacionSeleccionada] = useState(null);
   const [fechaIngreso, setFechaIngreso] = useState("");
+  const [fechaSalida, setFechaSalida] = useState("");
+
 
 
   useEffect(() => {
@@ -34,27 +36,80 @@ function Profile({ user }) {
     const data = await res.json();
     setHabitaciones(data);
   };
+  const calcularNoches = () => {
+    const entrada = new Date(fechaIngreso);
+    const salida = new Date(fechaSalida);
+    const diferencia = salida - entrada;
+    return Math.max(0, Math.ceil(diferencia / (1000 * 60 * 60 * 24)));
+  };
+  
+  const calcularPrecioTotal = () => {
+    return calcularNoches() * habitacionSeleccionada.price;
+  };
+  
+  const handleReserva = async () => {
+    if (!fechaIngreso || !fechaSalida || calcularNoches() <= 0) {
+      alert("Selecciona fechas válidas.");
+      return;
+    }
+  
+    const reservaData = {
+      entryDate: fechaIngreso,
+      exitDate: fechaSalida,
+      isPayed: false,
+      description: "Reserva realizada desde frontend",
+      price: calcularPrecioTotal()
+    };
+  
+    const res = await fetch(
+      `http://localhost:8080/api/clientes/${user.id}/${habitacionSeleccionada.id}/reserva`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(reservaData)
+      }
+    );
+  
+    if (res.ok) {
+      alert("Reserva realizada con éxito");
+      setHabitacionSeleccionada(null);
+      setFechaIngreso("");
+      setFechaSalida("");
+    } else {
+      alert("Error al realizar la reserva. Puede que la habitación esté ocupada.");
+    }
+  };
+  
 
   return (
     <div className="container">
       <style>{`
         .container {
-          font-family: 'Segoe UI', sans-serif;
-          background: linear-gradient(to right,rgb(31, 70, 143),rgb(3, 30, 69));
-          padding: 2rem;
-          border-radius: 10px;
-          max-width: 800px;
-          margin: 2rem auto;
-          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, rgb(31, 70, 143), rgb(3, 30, 69));
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 1200px;         /* Más ancho que antes */
+      margin: 4rem auto;         /* Centrado vertical y horizontalmente */
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+      
+      
         }
 
+  
+
+
+
         h2 {
-          color: #2c3e50;
+          color:rgb(255, 255, 255);
           margin-bottom: 0.5rem;
         }
 
         p {
-          color: #34495e;
+          color:rgb(255, 255, 255);
           margin-bottom: 1rem;
         }
 
@@ -149,23 +204,50 @@ function Profile({ user }) {
           {habitacionSeleccionada && (
   <div className="section">
     <h3>Seleccionaste la habitación: {habitacionSeleccionada.type}</h3>
-    <label htmlFor="fecha">Selecciona la fecha de ingreso:</label>
+
+    <label>Fecha de entrada:</label>
     <input
       type="date"
-      id="fecha"
       value={fechaIngreso}
       onChange={(e) => setFechaIngreso(e.target.value)}
-      style={{
-        padding: "0.5rem",
-        marginTop: "0.5rem",
-        fontSize: "1rem",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-        display: "block"
-      }}
+      style={{ padding: "0.5rem", marginBottom: "1rem", display: "block" }}
     />
+
+    <label>Fecha de salida:</label>
+    <input
+      type="date"
+      value={fechaSalida}
+      onChange={(e) => setFechaSalida(e.target.value)}
+      style={{ padding: "0.5rem", marginBottom: "1rem", display: "block" }}
+    />
+
+    {fechaIngreso && fechaSalida && (
+      <>
+        <p style={{ color: "#fff" }}>
+          Noches: {calcularNoches()}<br />
+          Precio total: {calcularPrecioTotal()} €
+        </p>
+
+        <button
+          onClick={handleReserva}
+          style={{
+            padding: "0.5rem 1rem",
+            backgroundColor: "#27ae60",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            marginTop: "1rem"
+          }}
+        >
+          Confirmar Reserva
+        </button>
+      </>
+    )}
   </div>
 )}
+
+
 
         </div>
       )}
