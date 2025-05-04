@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-function Profile({ user }) {
+////Falta que cuando se realiza una reserva se actulice la información
+
+function Profile({ user, setUser }) {
   const navigate = useNavigate();
   const [reservas, setReservas] = useState([]);
   const [hoteles, setHoteles] = useState([]);
@@ -16,6 +18,8 @@ function Profile({ user }) {
   const [rangoFechas, setRangoFechas] = useState([null, null]);
   const [startDate, endDate] = rangoFechas;
   const [userData, setUserData] = useState(user);
+
+  //const [userReset, setUsername] = useState("");
 
 const fetchDatosUsuario = async () => {
   const res = await fetch(`http://localhost:8080/api/clientes/${user.id}`);
@@ -96,13 +100,25 @@ useEffect(() => {
       const success = await res.json();
       if (success) {
         alert("Reserva realizada con éxito");
-        setHabitacionSeleccionada(null);
-        setFechaIngreso("");
-        setFechaSalida("");
-        setRangoFechas([null, null]);
+      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userJson = await userData.json();
+      setUser(userJson);
+        navigate("/profile");
+        window.location.reload();
+      setHabitacionSeleccionada(null);
+      setFechaIngreso("");
+      setFechaSalida("");
+      setRangoFechas([null, null]);
+
+      await fetchDatosUsuario(); // esto actualizará userData
+      await fetchReservas();     // esto actualizará reservas
+
+      //setUserData(await fetch(`http://localhost:8080/api/clientes/${user.id}`).then(r => r.json())); // global
       
-        await fetchDatosUsuario();  // actualiza puntos
-        await fetchReservas();      // actualiza lista de reservas
+
+      
+
+        
       }
        else {
         alert("Error al realizar la reserva. Puede que la habitación esté ocupada.");

@@ -1,11 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+//Falta que cuando se canjea el código se actulice la información
+
 function Canjear() {
   const [recompensas, setRecompensas] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state?.user;
+
+  const canjearRecompensa = (recompensa) => {
+    fetch(`http://localhost:8080/api/clientes/${user.id}/reward/${recompensa.id}`, {
+      method: "POST",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("No se pudo canjear la recompensa");
+        }
+        // Si hay contenido, lo devolvemos, si no, seguimos sin procesar JSON
+        return res.headers.get("Content-Length") === "0" ? null : res.json();
+      })
+      .then(() => {
+        
+        alert(
+          "¡Recompensa canjeada correctamente!\nRevisa tu correo para obtener el código de canjeo."
+        );
+      })
+      
+  };
+  
+  
 
   useEffect(() => {
     fetch("http://localhost:8080/api/recompensas")
@@ -56,7 +80,8 @@ function Canjear() {
               color: "white",
               cursor: "pointer",
             }}
-            onClick={() => alert(`Seleccionaste: ${recompensa.name}`)}
+            onClick={() => canjearRecompensa(recompensa)}
+
           >
             {recompensa.name + " - Descripción: " + recompensa.description + " - Precio: " + recompensa.points + " puntos"}
           </button>
