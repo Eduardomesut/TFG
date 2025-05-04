@@ -1,32 +1,46 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Profile({ user }) {
+  const navigate = useNavigate();
   const [reservas, setReservas] = useState([]);
   const [hoteles, setHoteles] = useState([]);
   const [hotelSeleccionado, setHotelSeleccionado] = useState(null);
   const [habitaciones, setHabitaciones] = useState([]);
   const [habitacionSeleccionada, setHabitacionSeleccionada] = useState(null);
+
   const [fechaIngreso, setFechaIngreso] = useState("");
   const [fechaSalida, setFechaSalida] = useState("");
+  const [rangoFechas, setRangoFechas] = useState([null, null]);
+  const [startDate, endDate] = rangoFechas;
+  const [userData, setUserData] = useState(user);
+
+const fetchDatosUsuario = async () => {
+  const res = await fetch(`http://localhost:8080/api/clientes/${user.id}`);
+  const data = await res.json();
+  setUserData(data);
+};
+
+const fetchReservas = async () => {
+  const res = await fetch(`http://localhost:8080/api/clientes/${user.username}/reservas`);
+  const data = await res.json();
+  setReservas(data);
+};
 
 
+useEffect(() => {
+  fetchDatosUsuario();
+  fetchReservas();
+  const fetchHoteles = async () => {
+    const res = await fetch(`http://localhost:8080/api/hoteles`);
+    const data = await res.json();
+    setHoteles(data);
+  };
+  fetchHoteles();
+}, [user]);
 
-  useEffect(() => {
-    const fetchReservas = async () => {
-      const res = await fetch(`http://localhost:8080/api/clientes/${user.username}/reservas`);
-      const data = await res.json();
-      setReservas(data);
-    };
-
-    const fetchHoteles = async () => {
-      const res = await fetch(`http://localhost:8080/api/hoteles`);
-      const data = await res.json();
-      setHoteles(data);
-    };
-
-    fetchReservas();
-    fetchHoteles();
-  }, [user]);
 
   const handleHotelChange = async (e) => {
     const hotelId = e.target.value;
@@ -36,31 +50,37 @@ function Profile({ user }) {
     const data = await res.json();
     setHabitaciones(data);
   };
+
   const calcularNoches = () => {
     const entrada = new Date(fechaIngreso);
     const salida = new Date(fechaSalida);
     const diferencia = salida - entrada;
     return Math.max(0, Math.ceil(diferencia / (1000 * 60 * 60 * 24)));
   };
-  
+
   const calcularPrecioTotal = () => {
-    return calcularNoches() * habitacionSeleccionada.price;
+    return calcularNoches() * (habitacionSeleccionada?.price || 0);
   };
-  
+
   const handleReserva = async () => {
-    if (!fechaIngreso || !fechaSalida || calcularNoches() <= 0) {
-      alert("Selecciona fechas válidas.");
+   
+
+
+    if (!habitacionSeleccionada || !fechaIngreso || !fechaSalida || calcularNoches() <= 0) {
+      alert("Selecciona una habitación y fechas válidas.");
       return;
     }
-  
-    const reservaData = {
-      entryDate: fechaIngreso,
-      exitDate: fechaSalida,
-      isPayed: false,
-      description: "Reserva realizada desde frontend",
-      price: calcularPrecioTotal()
-    };
-  
+
+    
+
+    
+      const entryDate = fechaIngreso;
+      const exitDate = fechaSalida;
+      const isPayed = false;
+      const description = "Reserva realizada desde frontend";
+      
+    
+    
     const res = await fetch(
       `http://localhost:8080/api/clientes/${user.id}/${habitacionSeleccionada.id}/reserva`,
       {
@@ -68,49 +88,46 @@ function Profile({ user }) {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(reservaData)
+        body: JSON.stringify({entryDate, exitDate, isPayed, description}),
       }
     );
-  
+
     if (res.ok) {
-      alert("Reserva realizada con éxito");
-      setHabitacionSeleccionada(null);
-      setFechaIngreso("");
-      setFechaSalida("");
+      const success = await res.json();
+      if (success) {
+        alert("Reserva realizada con éxito");
+        setHabitacionSeleccionada(null);
+        setFechaIngreso("");
+        setFechaSalida("");
+        setRangoFechas([null, null]);
+      
+        await fetchDatosUsuario();  // actualiza puntos
+        await fetchReservas();      // actualiza lista de reservas
+      }
+       else {
+        alert("Error al realizar la reserva. Puede que la habitación esté ocupada.");
+      }
     } else {
-      alert("Error al realizar la reserva. Puede que la habitación esté ocupada.");
+      alert("Error al conectar con el servidor.");
     }
   };
-  
 
   return (
     <div className="container">
       <style>{`
         .container {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, rgb(31, 70, 143), rgb(3, 30, 69));
-      padding: 2rem;
-      border-radius: 10px;
-      max-width: 1200px;         /* Más ancho que antes */
-      margin: 4rem auto;         /* Centrado vertical y horizontalmente */
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-      
-      
+          font-family: 'Segoe UI', sans-serif;
+          background: linear-gradient(to right, rgb(31, 70, 143), rgb(3, 30, 69));
+          padding: 2rem;
+          border-radius: 10px;
+          max-width: 1200px;
+          margin: 4rem auto;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          box-sizing: border-box;
         }
 
-  
-
-
-
-        h2 {
-          color:rgb(255, 255, 255);
-          margin-bottom: 0.5rem;
-        }
-
-        p {
-          color:rgb(255, 255, 255);
-          margin-bottom: 1rem;
+        h2, h3, p, li {
+          color: white;
         }
 
         select {
@@ -140,27 +157,27 @@ function Profile({ user }) {
 
         label {
           font-weight: bold;
+          color: white;
         }
       `}</style>
 
-      <h2>Bienvenido, {user.username}</h2>
-      <p>Email: {user.mail}</p>
-      <p>Puntos: {user.points}</p>
+      <h2>Bienvenido, {userData.username}</h2>
+      <p>Email: {userData.mail}</p>
+      <p>Puntos: {userData.points}</p>
       <button
-  onClick={() => window.location.href = "/canjear"}
-  style={{
-    padding: "0.5rem 1rem",
-    backgroundColor: "#2980b9",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-    marginBottom: "1rem"
-  }}
->
-  Canjear Recompensa
-</button>
-
+        onClick={() => navigate("/canjear", { state: { user } })}
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "#2980b9",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginBottom: "1rem"
+        }}
+      >
+        Canjear Recompensa
+      </button>
 
       <div className="section">
         <h3>Selecciona un hotel:</h3>
@@ -176,79 +193,71 @@ function Profile({ user }) {
         <div className="section">
           <h3>Habitaciones disponibles:</h3>
           <ul>
-          {habitaciones.length > 0 ? (
-  habitaciones.map((hab, idx) => (
-    <li key={idx}>
-      <button
-        onClick={() => setHabitacionSeleccionada(hab)}
-        style={{
-          backgroundColor: "#1abc9c",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          padding: "0.5rem",
-          cursor: "pointer",
-          width: "100%",
-          textAlign: "left"
-        }}
-      >
-        Tipo: {hab.type} | Precio: {hab.price}€ | Descripción: {hab.description}
-      </button>
-    </li>
-  ))
-) : (
-  <li>No hay habitaciones disponibles para este hotel.</li>
-)}
-
+            {habitaciones.length > 0 ? (
+              habitaciones.map((hab, idx) => (
+                <li key={idx}>
+                  <button
+                    onClick={() => setHabitacionSeleccionada(hab)}
+                    style={{
+                      backgroundColor: "#1abc9c",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "5px",
+                      padding: "0.5rem",
+                      cursor: "pointer",
+                      width: "100%",
+                      textAlign: "left"
+                    }}
+                  >
+                    Tipo: {hab.type} | Precio: {hab.price}€ | Descripción: {hab.description}
+                  </button>
+                </li>
+              ))
+            ) : (
+              <li>No hay habitaciones disponibles para este hotel.</li>
+            )}
           </ul>
+
           {habitacionSeleccionada && (
-  <div className="section">
-    <h3>Seleccionaste la habitación: {habitacionSeleccionada.type}</h3>
+            <div className="section">
+              <h3>Seleccionaste la habitación: {habitacionSeleccionada.type}</h3>
+              <label>Selecciona rango de fechas:</label>
+              <DatePicker
+                selectsRange={true}
+                startDate={startDate}
+                endDate={endDate}
+                onChange={(update) => {
+                  setRangoFechas(update);
+                  setFechaIngreso(update[0]?.toISOString().split("T")[0] || "");
+                  setFechaSalida(update[1]?.toISOString().split("T")[0] || "");
+                }}
+                isClearable={true}
+                dateFormat="yyyy-MM-dd"
+                minDate={new Date()}
+              />
 
-    <label>Fecha de entrada:</label>
-    <input
-      type="date"
-      value={fechaIngreso}
-      onChange={(e) => setFechaIngreso(e.target.value)}
-      style={{ padding: "0.5rem", marginBottom: "1rem", display: "block" }}
-    />
-
-    <label>Fecha de salida:</label>
-    <input
-      type="date"
-      value={fechaSalida}
-      onChange={(e) => setFechaSalida(e.target.value)}
-      style={{ padding: "0.5rem", marginBottom: "1rem", display: "block" }}
-    />
-
-    {fechaIngreso && fechaSalida && (
-      <>
-        <p style={{ color: "#fff" }}>
-          Noches: {calcularNoches()}<br />
-          Precio total: {calcularPrecioTotal()} €
-        </p>
-
-        <button
-          onClick={handleReserva}
-          style={{
-            padding: "0.5rem 1rem",
-            backgroundColor: "#27ae60",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            marginTop: "1rem"
-          }}
-        >
-          Confirmar Reserva
-        </button>
-      </>
-    )}
-  </div>
-)}
-
-
-
+              {fechaIngreso && fechaSalida && (
+                <>
+                  <p>Noches: {calcularNoches()}</p>
+                  <p>Precio total: {calcularPrecioTotal()} €</p>
+                  <button
+                    onClick={handleReserva}
+                    style={{
+                      padding: "0.5rem 1rem",
+                      backgroundColor: "#27ae60",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      marginTop: "1rem"
+                    }}
+                  >
+                    Confirmar Reserva
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
       )}
 

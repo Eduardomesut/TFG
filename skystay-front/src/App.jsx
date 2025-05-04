@@ -16,7 +16,7 @@ function App() {
         <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={user ? <Profile user={user} /> : <Login setUser={setUser} />} />
-        <Route path="/canjear" element={<Canjear />} />
+        <Route path="/canjear" element={<Canjear user={user} />} />
       </Routes>
     </Router>
   );
