@@ -9,9 +9,26 @@ services:
     depends_on:
       - mariadb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/tfg
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING.DATASOURCE.PASSWORD:
+      spring.datasource.url: jdbc:mariadb://mariadb:3306/tfg
+      spring.datasource.username: root
+      spring.datasource.password:
+      spring.jpa.show-sql: true
+      spring.jpa.hibernate.ddl-auto: create
+      server.port: 8080
+      spring.sql.init.mode: always
+      spring.jpa.defer-datasource-initialization: true
+
+      spring.security.user.name: admin
+      spring.security.user.password: admin
+
+      spring.mail.host: smtp.gmail.com
+      spring.mail.port: 587
+      spring.mail.username: skystayinfo@gmail.com
+      spring.mail.password: ajnz brjc bfpm omxv
+      spring.mail.properties.mail.smtp.auth: true
+      spring.mail.properties.mail.smtp.starttls.enable: true
+
+      
 
   mariadb:
     image: mariadb:11
