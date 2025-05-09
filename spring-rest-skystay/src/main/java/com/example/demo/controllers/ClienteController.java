@@ -89,6 +89,20 @@ public class ClienteController {
         }
 
     }
+    /* CON AUTH
+    @PostMapping("/clientes/login")
+    public ResponseEntity<String> inicioSesion(@RequestBody LoginRequest loginRequest) {
+        Cliente cliente = clienteRepository.findByUsername(loginRequest.getUser());
+        if (cliente != null && passwordEncoder.matches(loginRequest.getPassword(), cliente.getPassword())) {
+            String token = jwtUtil.generarToken(cliente.getUsername());
+            return ResponseEntity.ok(token); // ← DEVUELVES EL TOKEN AQUÍ
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+        }
+    }
+
+
+     */
 
     //Añadir un amigo ----- FALTA COMPROBAR SI ESTA BIEN
     @PutMapping("/clientes/{id}/amigo/{username}")
