@@ -22,10 +22,17 @@ function Profile({ user, setUser }) {
   //const [userReset, setUsername] = useState("");
 
 const fetchDatosUsuario = async () => {
-  const res = await fetch(`http://localhost:8080/api/clientes/${user.id}`);
+  const res = await fetch(`http://localhost:8080/api/clientes/${user.username}`);
   const data = await res.json();
   setUserData(data);
 };
+
+const handleLogout = () => {
+  localStorage.removeItem("user");
+  setUser(null);
+  navigate("/login");
+};
+
 
 const fetchReservas = async () => {
   const res = await fetch(`http://localhost:8080/api/clientes/${user.username}/reservas`);
@@ -100,11 +107,6 @@ useEffect(() => {
       const success = await res.json();
       if (success) {
         alert("Reserva realizada con éxito");
-      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
-      const userJson = await userData.json();
-      setUser(userJson);
-        navigate("/profile");
-        window.location.reload();
       setHabitacionSeleccionada(null);
       setFechaIngreso("");
       setFechaSalida("");
@@ -114,7 +116,12 @@ useEffect(() => {
       await fetchReservas();     // esto actualizará reservas
 
       //setUserData(await fetch(`http://localhost:8080/api/clientes/${user.id}`).then(r => r.json())); // global
-      
+      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userJson = await userData.json();
+      setUser(userJson);
+      localStorage.setItem("user", JSON.stringify(userJson));
+      navigate("/profile");
+      window.location.reload();
 
       
 

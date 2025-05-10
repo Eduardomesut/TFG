@@ -16,11 +16,12 @@ function Login({ setUser }) {
 
     const success = await response.json();
     if (success) {
-      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
-      const userJson = await userData.json();
-      setUser(userJson);
-      navigate("/profile");
-    } else {
+    const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+    const userJson = await userData.json();
+    setUser(userJson);
+    localStorage.setItem("user", JSON.stringify(userJson)); // <-- Guardar en localStorage
+    navigate("/profile");
+    }else {
       alert("Credenciales incorrectas");
     }
   };
