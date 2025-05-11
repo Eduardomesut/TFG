@@ -121,6 +121,12 @@ function Register() {
           >
             Registrarse
           </button>
+          <button
+            onClick={() => navigate("/")}
+            className="back-btn"
+          >
+            Volver atrás
+          </button>
         </div>
       </div>
 

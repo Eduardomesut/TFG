@@ -16,14 +16,18 @@ function Login({ setUser }) {
 
     const success = await response.json();
     if (success) {
-    const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
-    const userJson = await userData.json();
-    setUser(userJson);
-    localStorage.setItem("user", JSON.stringify(userJson)); // <-- Guardar en localStorage
-    navigate("/profile");
-    }else {
+      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userJson = await userData.json();
+      setUser(userJson);
+      localStorage.setItem("user", JSON.stringify(userJson));
+      navigate("/profile");
+    } else {
       alert("Credenciales incorrectas");
     }
+  };
+
+  const handleBack = () => {
+    navigate("/"); 
   };
 
   return (
@@ -48,6 +52,7 @@ function Login({ setUser }) {
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
           text-align: center;
           min-width: 300px;
+          position: relative;
         }
 
         form h2 {
@@ -85,9 +90,27 @@ function Login({ setUser }) {
         form button:hover {
           background-color: #1c5d87;
         }
+
+        .back-button {
+          position: absolute;
+          top: -2.5rem;
+          left: 0;
+          background-color: #e74c3c;
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+          background-color: #c0392b;
+        }
       `}</style>
 
       <form onSubmit={handleSubmit}>
+        <button type="button" className="back-button" onClick={handleBack}>← Atrás</button>
         <h2>Iniciar Sesión</h2>
         <input
           placeholder="Usuario"

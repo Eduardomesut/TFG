@@ -214,6 +214,19 @@ useEffect(() => {
 
       {hotelSeleccionado && (
         <div className="section">
+          <h3>Vista previa del hotel seleccionado:</h3>
+      <img
+      src={`/hotel${hotelSeleccionado}.jpg`}
+      alt="Vista previa del hotel"
+      style={{
+      width: "100%",
+      maxHeight: "250px",
+      objectFit: "cover",
+      borderRadius: "10px",
+      marginBottom: "1rem"
+    }}
+/>
+
           <h3>Habitaciones disponibles:</h3>
           <ul>
             {habitaciones.length > 0 ? (

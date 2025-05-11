@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-//Falta que cuando se canjea el código se actulice la información
-
 function Canjear() {
   const [recompensas, setRecompensas] = useState([]);
+  const [userData, setUserData] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state?.user;
+
+  const fetchUserData = () => {
+    fetch(`http://localhost:8080/api/clientes/${user.username}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("No se pudo obtener la información del usuario");
+        return res.json();
+      })
+      .then((data) => setUserData(data))
+      .catch((err) => console.error(err));
+  };
 
   const canjearRecompensa = (recompensa) => {
     fetch(`http://localhost:8080/api/clientes/${user.id}/reward/${recompensa.id}`, {
@@ -17,21 +26,23 @@ function Canjear() {
         if (!res.ok) {
           throw new Error("No se pudo canjear la recompensa");
         }
-        // Si hay contenido, lo devolvemos, si no, seguimos sin procesar JSON
         return res.headers.get("Content-Length") === "0" ? null : res.json();
       })
       .then(() => {
-        
-        alert(
-          "¡Recompensa canjeada correctamente!\nRevisa tu correo para obtener el código de canjeo."
-        );
+        alert("¡Recompensa canjeada correctamente!\nRevisa tu correo para obtener el código de canjeo.");
+        // ACTUALIZAR los datos del usuario después del canjeo
+        fetchUserData();
       })
-      
+      .catch((error) => {
+        console.error("Error al canjear recompensa:", error);
+        alert("Hubo un error al canjear la recompensa.");
+      });
   };
-  
-  
 
   useEffect(() => {
+    if (!user) return;
+
+    // Cargar recompensas
     fetch("http://localhost:8080/api/recompensas")
       .then((response) => {
         if (!response.ok) {
@@ -41,7 +52,10 @@ function Canjear() {
       })
       .then((data) => setRecompensas(data))
       .catch((error) => console.error("Error:", error));
-  }, []);
+
+    // Cargar datos del usuario
+    fetchUserData();
+  }, [user]);
 
   if (!user) {
     return <p style={{ padding: "2rem" }}>No hay usuario. Vuelve al perfil.</p>;
@@ -51,7 +65,7 @@ function Canjear() {
     <div style={{ padding: "2rem", fontFamily: "Segoe UI" }}>
       <h2>Canjeo de Recompensas</h2>
       <p>Aquí podrás canjear tus puntos por recompensas.</p>
-      <p><strong>Tus puntos:</strong> {user.points}</p>
+      <p><strong>Tus puntos:</strong> {userData ? userData.points : "Cargando..."}</p>
 
       <button
         onClick={() => navigate("/profile", { state: { user } })}
@@ -81,7 +95,6 @@ function Canjear() {
               cursor: "pointer",
             }}
             onClick={() => canjearRecompensa(recompensa)}
-
           >
             {recompensa.name + " - Descripción: " + recompensa.description + " - Precio: " + recompensa.points + " puntos"}
           </button>
