@@ -120,6 +120,15 @@ public class ClienteController {
         }
 
     }
+    //Ver amigos de un usuario
+    @GetMapping("/clientes/{id}/amigos")
+    public ResponseEntity<List<Cliente>> listarAmigos(@PathVariable Long id){
+        if (clienteRepository.findById(id) != null) {
+            List<Cliente> amigos = clienteRepository.findById(id).get().getAmigos();
+            return ResponseEntity.ok(amigos);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
     //Eliminar un amigo ----- FALTA COMPROBAR SI ESTA BIEN
     @DeleteMapping("/clientes/{id}/amigo/{username}/delete")
     public Boolean eliminarAmigo(@PathVariable String username, @PathVariable Long id){
