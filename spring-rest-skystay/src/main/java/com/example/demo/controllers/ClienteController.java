@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,12 +121,16 @@ public class ClienteController {
         }
 
     }
-    //Ver amigos de un usuario
+    //Ver usuarios amigos
     @GetMapping("/clientes/{id}/amigos")
-    public ResponseEntity<List<Cliente>> listarAmigos(@PathVariable Long id){
+    public ResponseEntity<List<String>> listarAmigos(@PathVariable Long id){
+        List<String> usuarios = new ArrayList<>();
         if (clienteRepository.findById(id) != null) {
             List<Cliente> amigos = clienteRepository.findById(id).get().getAmigos();
-            return ResponseEntity.ok(amigos);
+            for (Cliente amigo:amigos){
+                usuarios.add(amigo.getUsername());
+            }
+            return ResponseEntity.ok(usuarios);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

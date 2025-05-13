@@ -19,6 +19,16 @@ function Profile({ user, setUser }) {
   const [startDate, endDate] = rangoFechas;
   const [userData, setUserData] = useState(user);
 
+  const [usernameAmigo, setUsernameAmigo] = useState("");
+  const [mensajeAmigo, setMensajeAmigo] = useState("");
+  const [mostrarFormularioAmigo, setMostrarFormularioAmigo] = useState(false);
+
+  const [mostrarAmigos, setMostrarAmigos] = useState(false);
+  const [amigos, setAmigos] = useState([]);
+
+
+
+
   //const [userReset, setUsername] = useState("");
 
 const fetchDatosUsuario = async () => {
@@ -31,6 +41,46 @@ const handleLogout = () => {
   localStorage.removeItem("user");
   setUser(null);
   navigate("/login");
+};
+const handleAgregarAmigo = async () => {
+  if (!usernameAmigo) {
+    setMensajeAmigo("Introduce un nombre de usuario.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:8080/api/clientes/${user.id}/amigo/${usernameAmigo}`, {
+      method: "PUT"
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setMensajeAmigo(`Amigo añadido: ${usernameAmigo}`);
+      setUsernameAmigo("");
+      setMostrarFormularioAmigo(false); // Ocultar formulario después de añadir
+      await fetchDatosUsuario(); // Refresca datos
+    } else if (res.status === 401) {
+      setMensajeAmigo("Usuario no encontrado o no válido.");
+    } else {
+      setMensajeAmigo("Error al intentar añadir amigo.");
+    }
+  } catch (error) {
+    setMensajeAmigo("Error de conexión con el servidor.");
+  }
+};
+
+const fetchAmigos = async () => {
+  try {
+    const res = await fetch(`http://localhost:8080/api/clientes/${user.id}/amigos`);
+    if (res.ok) {
+      const data = await res.json();
+      setAmigos(data);
+    } else if (res.status === 401) {
+      setAmigos([]);
+    }
+  } catch (error) {
+    console.error("Error al obtener los amigos:", error);
+  }
 };
 
 
@@ -175,7 +225,7 @@ useEffect(() => {
         }
 
         .section {
-          margin-top: 2rem;
+          margin-top: 0.5rem;
         }
 
         label {
@@ -187,6 +237,118 @@ useEffect(() => {
       <h2>Bienvenido, {userData.username}</h2>
       <p>Email: {userData.mail}</p>
       <p>Puntos: {userData.points}</p>
+<div className="section">
+  {!mostrarFormularioAmigo ? (
+    <button
+      onClick={() => setMostrarFormularioAmigo(true)}
+      style={{
+        padding: "0.5rem 1rem",
+        backgroundColor: "#8e44ad",
+        color: "#fff",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer"
+      }}
+    >
+      Añadir amigo
+    </button>
+  ) : (
+    <div>
+      <input
+        type="text"
+        placeholder="Nombre de usuario"
+        value={usernameAmigo}
+        onChange={(e) => setUsernameAmigo(e.target.value)}
+        style={{
+          padding: "0.5rem",
+          borderRadius: "5px",
+          border: "1px solid #ccc",
+          marginRight: "0.5rem"
+        }}
+      />
+      <button
+        onClick={handleAgregarAmigo}
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "#8e44ad",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer"
+        }}
+      >
+        Confirmar
+      </button>
+      <button
+        onClick={() => {
+          setMostrarFormularioAmigo(false);
+          setUsernameAmigo("");
+          setMensajeAmigo("");
+        }}
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "#ccc",
+          color: "#333",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginLeft: "0.5rem"
+        }}
+      >
+        Cancelar
+      </button>
+    </div>
+  )}
+  {mensajeAmigo && <p style={{ color: "white", marginTop: "0.5rem" }}>{mensajeAmigo}</p>}
+</div>
+
+<div className="section">
+  <button
+    onClick={() => {
+      if (!mostrarAmigos) {
+        fetchAmigos();
+      }
+      setMostrarAmigos(!mostrarAmigos);
+    }}
+    style={{
+      padding: "0.5rem 1rem",
+      backgroundColor: "#3498db",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer"
+    }}
+  >
+    {mostrarAmigos ? "Ocultar amigos" : "Amigos"}
+  </button>
+
+  {mostrarAmigos && (
+    <div style={{ marginTop: "1rem", color: "white" }}>
+      {amigos.length === 0 ? (
+        <p>No tienes amigos añadidos.</p>
+      ) : (
+        <ul style={{ listStyleType: "none", padding: 0 }}>
+          {amigos.map((amigo) => (
+            <li
+              key={amigo}
+              style={{
+                backgroundColor: "#2c3e50",
+                color: "#ecf0f1",
+                padding: "0.5rem",
+                marginBottom: "0.5rem",
+                borderRadius: "5px"
+              }}
+            >
+              {amigo}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )}
+</div>
+
+  <div className="section">
       <button
         onClick={() => navigate("/canjear", { state: { user } })}
         style={{
@@ -201,6 +363,7 @@ useEffect(() => {
       >
         Canjear Recompensa
       </button>
+      </div>
 
       <div className="section">
         <h3>Selecciona un hotel:</h3>

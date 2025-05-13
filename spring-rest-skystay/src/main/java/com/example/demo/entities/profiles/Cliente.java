@@ -2,6 +2,7 @@ package com.example.demo.entities.profiles;
 
 import com.example.demo.entities.objects.Reserva;
 import com.example.demo.entities.objects.Rewards;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
