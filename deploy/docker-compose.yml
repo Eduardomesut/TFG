@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+
+  mariadb:
+    image: mariadb:11
+    container_name: contenedor-mariadb
+    restart: always
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+      MARIADB_DATABASE: tfg
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
   api:
     build: .
     container_name: contenedor-api
@@ -30,17 +42,7 @@ services:
 
       
 
-  mariadb:
-    image: mariadb:11
-    container_name: contenedor-mariadb
-    restart: always
-    environment:
-      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
-      MARIADB_DATABASE: tfg
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
+  
 
 volumes:
   mariadb_data:
