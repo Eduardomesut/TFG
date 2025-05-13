@@ -105,21 +105,29 @@ public class ClienteController {
 
      */
 
-    //Añadir un amigo ----- FALTA COMPROBAR SI ESTA BIEN
+    //Añadir un amigo
     @PutMapping("/clientes/{id}/amigo/{username}")
     public ResponseEntity<Cliente> insertarAmigo(@PathVariable String username, @PathVariable Long id){
         if ((clienteRepository.findByUsername(username) != null) && (clienteRepository.findById(id) != null)) {
             Cliente guardar = clienteRepository.findById(id).get();
             Cliente nuevo = clienteRepository.findByUsername(username);
             List<Cliente> amigos = guardar.getAmigos();
-            amigos.add(nuevo);
-            guardar.setAmigos(amigos);
-            clienteRepository.save(guardar);
-            return ResponseEntity.ok(guardar);
+            if (!guardar.getId().equals(nuevo.getId())) {
+                if (amigos.stream().noneMatch(amigo -> amigo.getId().equals(nuevo.getId()))) {
+                    amigos.add(nuevo);
+                    guardar.setAmigos(amigos);
+                    clienteRepository.save(guardar);
+                    return ResponseEntity.ok(guardar);
+                }
+            }else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
         }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     //Ver usuarios amigos
     @GetMapping("/clientes/{id}/amigos")
@@ -165,6 +173,15 @@ public class ClienteController {
         }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @GetMapping("clientes/{id}/saldo")
+    public ResponseEntity<Double> getSaldoCliente(@PathVariable Long id){
+        if (clienteRepository.existsById(id)){
+            Double sueldo = clienteRepository.findById(id).get().getSueldo();
+            return ResponseEntity.ok(sueldo);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     //MAS ACCIONES A realizar DE CLIENTE
