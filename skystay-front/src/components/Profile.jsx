@@ -26,6 +26,8 @@ function Profile({ user, setUser }) {
   const [mostrarAmigos, setMostrarAmigos] = useState(false);
   const [amigos, setAmigos] = useState([]);
 
+  
+
 
 
 
@@ -236,7 +238,23 @@ useEffect(() => {
 
       <h2>Bienvenido, {userData.username}</h2>
       <p>Email: {userData.mail}</p>
-      <p>Puntos: {userData.points}</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+  <p style={{ marginRight: 8 }}>Puntos: {userData.points}</p>
+  <button
+    onClick={() => navigate("/canjear", { state: { user } })}
+    style={{
+      padding: "0.5rem 1rem",
+      backgroundColor: "#2980b9",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer"
+    }}
+  >
+    Canjear Recompensa
+  </button>
+</div>
+      <p>Cartera: {userData.sueldo}€</p>
 <div className="section">
   {!mostrarFormularioAmigo ? (
     <button
@@ -348,22 +366,7 @@ useEffect(() => {
   )}
 </div>
 
-  <div className="section">
-      <button
-        onClick={() => navigate("/canjear", { state: { user } })}
-        style={{
-          padding: "0.5rem 1rem",
-          backgroundColor: "#2980b9",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginBottom: "1rem"
-        }}
-      >
-        Canjear Recompensa
-      </button>
-      </div>
+  
 
       <div className="section">
         <h3>Selecciona un hotel:</h3>
