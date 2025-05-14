@@ -26,6 +26,11 @@ function Profile({ user, setUser }) {
   const [mostrarAmigos, setMostrarAmigos] = useState(false);
   const [amigos, setAmigos] = useState([]);
 
+  const [cantidadSaldo, setCantidadSaldo] = useState(0);
+  const [mensajeSaldo, setMensajeSaldo] = useState("");
+  const [mostrarFormularioCartera, setMostrarFormularioCartera] = useState(false);
+
+
   
 
 
@@ -70,6 +75,28 @@ const handleAgregarAmigo = async () => {
     setMensajeAmigo("Error de conexión con el servidor.");
   }
 };
+const handleModificarSaldo = async () => {
+  try {
+    const res = await fetch(`http://localhost:8080/api/clientes/${user.id}/saldo/${cantidadSaldo}`, {
+      method: "PUT"
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setUserData(data); // actualiza localmente el sueldo
+      setUser(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      setMensajeSaldo("Saldo actualizado con éxito.");
+    } else if (res.status === 404) {
+      setMensajeSaldo("Cliente no encontrado.");
+    } else {
+      setMensajeSaldo("Error al modificar el saldo.");
+    }
+  } catch (error) {
+    setMensajeSaldo("Error de conexión con el servidor.");
+  }
+};
+
 
 const fetchAmigos = async () => {
   try {
@@ -255,6 +282,55 @@ useEffect(() => {
   </button>
 </div>
       <p>Cartera: {userData.sueldo}€</p>
+      <div className="section">
+        {!mostrarFormularioCartera ? (
+    <button
+      onClick={() => setMostrarFormularioCartera(true)}
+      style={{
+        padding: "0.5rem 1rem",
+        backgroundColor: "#8e44ad",
+        color: "#fff",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer"
+      }}
+    >
+      Añadir dinero
+    </button>
+  ) : (
+    <div>
+  <h3>Modificar saldo</h3>
+  <input
+    type="number"
+    value={cantidadSaldo}
+    onChange={(e) => setCantidadSaldo(Number(e.target.value))}
+    style={{
+      padding: "0.5rem",
+      marginRight: "0.5rem",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+      width: "120px"
+    }}
+  />
+
+  <button
+    onClick={handleModificarSaldo}
+    style={{
+      padding: "0.5rem 1rem",
+      backgroundColor: "#27ae60",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer"
+    }}
+  >
+    Aplicar
+  </button>
+  {mensajeSaldo && <p style={{ color: "white", marginTop: "0.5rem" }}>{mensajeSaldo}</p>}
+  </div>
+  )}
+</div>
+
 <div className="section">
   {!mostrarFormularioAmigo ? (
     <button
