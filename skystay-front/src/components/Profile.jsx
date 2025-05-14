@@ -326,6 +326,22 @@ useEffect(() => {
   >
     Aplicar
   </button>
+  <button
+        onClick={() => {
+          setMostrarFormularioCartera(false);        
+        }}
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "#ccc",
+          color: "#333",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginLeft: "0.5rem"
+        }}
+      >
+        Cancelar
+      </button>
   {mensajeSaldo && <p style={{ color: "white", marginTop: "0.5rem" }}>{mensajeSaldo}</p>}
   </div>
   )}

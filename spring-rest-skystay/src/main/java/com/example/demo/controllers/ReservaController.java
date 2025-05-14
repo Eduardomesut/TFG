@@ -49,10 +49,15 @@ public class ReservaController {
                 }
             }
         }
-
-        // Asignamos cliente y habitación a la reserva
         reserva.setCliente(cliente);
         reserva.setHabitacion(habitacion);
+        if (cliente.getSueldo() < reserva.getPrice()){
+            return ResponseEntity.badRequest().build();
+        }
+        cliente.setSueldo(cliente.getSueldo() - reserva.getPrice());
+        
+        // Asignamos cliente y habitación a la reserva
+
 
 
         // Guardamos la reserva
