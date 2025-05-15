@@ -30,7 +30,7 @@ function Profile({ user, setUser }) {
   const [mensajeSaldo, setMensajeSaldo] = useState("");
   const [mostrarFormularioCartera, setMostrarFormularioCartera] = useState(false);
 
-
+  const [mostrarFormularioReserva, setMostrarFormularioReserva] = useState(false);
   
 
 
@@ -458,7 +458,22 @@ useEffect(() => {
   )}
 </div>
 
-  
+  <div className="section">
+  {!mostrarFormularioReserva ? (
+    <button
+      onClick={() => setMostrarFormularioReserva(true)}
+      style={{
+        padding: "0.5rem 1rem",
+        backgroundColor: "#8e44ad",
+        color: "#fff",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer"
+      }}
+    >
+      Añadir reserva
+    </button>
+  ) : (
 
       <div className="section">
         <h3>Selecciona un hotel:</h3>
@@ -469,6 +484,8 @@ useEffect(() => {
           ))}
         </select>
       </div>
+  )}</div>
+  
 
       {hotelSeleccionado && (
         <div className="section">
