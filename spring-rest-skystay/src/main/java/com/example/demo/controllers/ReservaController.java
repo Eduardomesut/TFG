@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
@@ -74,12 +76,31 @@ public class ReservaController {
     //Borrar reserva
     @DeleteMapping("clientes/reserva/borrar/{id}")
     public ResponseEntity<String> eliminarReserva(@PathVariable Long id) {
-        if (reservaRepository.existsById(id)) {
-            reservaRepository.deleteById(id);
+        Optional<Reserva> optionalReserva = reservaRepository.findById(id);
+
+        if (optionalReserva.isPresent()) {
+            Reserva reserva = optionalReserva.get();
+            Habitacion habitacion = reserva.getHabitacion();
+            Cliente cliente = reserva.getCliente();
+            if (cliente != null && habitacion != null) {
+                cliente.getReservas().remove(reserva);
+                habitacion.getReservas().remove(reserva);
+                reserva.setCliente(null);
+                reserva.setHabitacion(null);
+                reserva.setPrice(0.0);
+                clienteRepository.save(cliente);
+                habitacionRepository.save(habitacion);
+                reservaRepository.delete(reserva);
+            } else {
+                reservaRepository.delete(reserva);
+            }
+
             return ResponseEntity.ok("Reserva eliminada");
         }
-        return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.badRequest().body("La reserva no existe");
     }
+
 
     //Modificar reserva
     @PutMapping("clientes/reserva/modificar/{id}")

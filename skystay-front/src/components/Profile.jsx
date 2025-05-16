@@ -31,9 +31,8 @@ function Profile({ user, setUser }) {
   const [mostrarFormularioCartera, setMostrarFormularioCartera] = useState(false);
 
   const [mostrarFormularioReserva, setMostrarFormularioReserva] = useState(false);
-  
 
-
+  const [mensajeBorrar, setMensajeBorrar] = useState("");
 
 
   //const [userReset, setUsername] = useState("");
@@ -151,6 +150,25 @@ useEffect(() => {
   const calcularPrecioTotal = () => {
     return calcularNoches() * (habitacionSeleccionada?.price || 0);
   };
+  const cancelarReserva = async (id) => {
+    console.log("Intentando borrar la reserva con ID: " + id);
+  try {
+    const response = await fetch(`http://localhost:8080/api/clientes/reserva/borrar/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (response.ok) {
+      setMensajeBorrar("Reserva cancelada correctamente")
+      // Eliminar del estado local solo si se borró correctamente en el backend
+      //setReservas(prevReservas => prevReservas.filter(r => r.id !== id));
+    } else {
+      console.error("No se pudo eliminar la reserva.");
+    }
+  } catch (error) {
+    console.error("Error al eliminar la reserva:", error);
+  }
+};
+
 
   const handleReserva = async () => {
    
@@ -223,6 +241,8 @@ useEffect(() => {
           padding: 2rem;
           border-radius: 10px;
           max-width: 1200px;
+          width:700px;
+          
           margin: 4rem auto;
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
           box-sizing: border-box;
@@ -275,7 +295,8 @@ useEffect(() => {
       color: "#fff",
       border: "none",
       borderRadius: "5px",
-      cursor: "pointer"
+      cursor: "pointer",
+      marginRight: 350
     }}
   >
     Canjear Recompensa
@@ -575,10 +596,28 @@ useEffect(() => {
       <div className="section">
         <h3>Mis reservas:</h3>
         <ul>
-          {reservas.map((r, idx) => (
-            <li key={idx}>{JSON.stringify(r)}</li>
-          ))}
-        </ul>
+  {reservas.map((r, idx) => (
+    <li key={idx}>
+      {'Hotel: ' + r.nombreHotel + ' - Número habitación: ' + r.numeroHabitacion + ' - Entrada: ' + r.entryDate + ' - Salida: ' + r.exitDate}
+      <button
+        onClick={() => {console.log("Botón clicado");cancelarReserva(r.id)} }
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "red",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          marginLeft: 8
+        }}
+      >
+        Cancelar Reserva
+      </button>
+      {mensajeBorrar && <p style={{ color: "white", marginTop: "0.5rem" }}>{mensajeBorrar}</p>}
+    </li>
+  ))}
+</ul>
+
       </div>
     </div>
   );

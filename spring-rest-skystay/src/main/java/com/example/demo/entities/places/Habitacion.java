@@ -99,6 +99,14 @@ public class Habitacion {
         return isOcupped;
     }
 
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+
     public void setOcupped(boolean ocupped) {
         isOcupped = ocupped;
     }

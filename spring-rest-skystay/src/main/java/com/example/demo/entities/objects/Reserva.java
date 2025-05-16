@@ -112,8 +112,13 @@ public class Reserva {
     }
 
     public void setHabitacion(Habitacion habitacion) {
-        this.habitacion = habitacion;
-        this.price = calcularPrecio();
+        if(habitacion != null) {
+            this.habitacion = habitacion;
+            this.price = calcularPrecio();
+        }else {
+            this.habitacion = null;
+        }
+
     }
 
     public LocalDate getEntryDate() {
