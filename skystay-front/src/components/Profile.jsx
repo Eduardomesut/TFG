@@ -251,7 +251,7 @@ useEffect(() => {
           padding: 2rem;
           border-radius: 10px;
           max-width: 1200px;
-          width:700px;
+          width:800px;
           
           margin: 4rem auto;
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -295,6 +295,9 @@ useEffect(() => {
         .section {
           margin-top: 0.5rem;
         }
+          .linea{
+          display: inline;
+          }
 
         label {
           font-weight: bold;
@@ -302,9 +305,11 @@ useEffect(() => {
         }
       `}</style>
     <div className="banner">
-      <h2>Bienvenido, {userData.username}</h2>
-      <p>Email: {userData.mail}</p>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+      <div className="linea" style={{ display: "flex", gap: "3rem", alignItems: "center" }}>
+  <h2>Bienvenido, {userData.username}</h2>
+  <p>Cartera: {userData.sueldo}€</p>
+  <p>Email: {userData.mail}</p>
+       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
   <p style={{ marginRight: 8 }}>Puntos: {userData.points}</p>
   <button
     onClick={() => navigate("/canjear", { state: { user } })}
@@ -321,7 +326,10 @@ useEffect(() => {
     Canjear Recompensa
   </button>
 </div>
-      <p>Cartera: {userData.sueldo}€</p>
+</div>
+
+ 
+      
     </div>
       <div className="section">
         {!mostrarFormularioCartera ? (
