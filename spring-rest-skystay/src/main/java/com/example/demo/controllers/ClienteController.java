@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -161,19 +163,27 @@ public class ClienteController {
             return false;
         }
     }
-    //Añadir o retirar sueldo a cliente -- FALTA COMPROBAR
+    //Añadir o retirar sueldo a cliente -- 2 decimales
     @PutMapping("/clientes/{id}/saldo/{mas}")
-    public ResponseEntity<Cliente> saldoCliente(@PathVariable Long id, @PathVariable Double mas){
-        if (clienteRepository.existsById(id)){
+    public ResponseEntity<Cliente> saldoCliente(@PathVariable Long id, @PathVariable Double mas) {
+        if (clienteRepository.existsById(id)) {
             Cliente modificar = clienteRepository.findById(id).get();
             Double sueldo = modificar.getSueldo();
-            modificar.setSueldo(sueldo + mas);
+
+            // Sumar y redondear a 2 decimales usando BigDecimal
+            BigDecimal nuevoSueldo = BigDecimal.valueOf(sueldo)
+                    .add(BigDecimal.valueOf(mas))
+                    .setScale(2, RoundingMode.HALF_UP);
+
+            modificar.setSueldo(nuevoSueldo.doubleValue());
             clienteRepository.save(modificar);
+
             return ResponseEntity.ok(modificar);
-        }else {
+        } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
 
     @GetMapping("clientes/{id}/saldo")
     public ResponseEntity<Double> getSaldoCliente(@PathVariable Long id){

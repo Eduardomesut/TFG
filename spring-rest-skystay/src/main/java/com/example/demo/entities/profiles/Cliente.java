@@ -22,6 +22,7 @@ public class Cliente {
     @Column(unique = true)
     private String username;
     private String password;
+    @Column(unique = true)
     private String mail;
     private LocalDate birthdate;
     private Integer points = 0;

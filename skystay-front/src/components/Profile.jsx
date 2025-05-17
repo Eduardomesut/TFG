@@ -32,7 +32,7 @@ function Profile({ user, setUser }) {
 
   const [mostrarFormularioReserva, setMostrarFormularioReserva] = useState(false);
 
-  const [mensajeBorrar, setMensajeBorrar] = useState("");
+ 
 
 
   //const [userReset, setUsername] = useState("");
@@ -151,14 +151,24 @@ useEffect(() => {
     return calcularNoches() * (habitacionSeleccionada?.price || 0);
   };
   const cancelarReserva = async (id) => {
-    console.log("Intentando borrar la reserva con ID: " + id);
+    
   try {
     const response = await fetch(`http://localhost:8080/api/clientes/reserva/borrar/${id}`, {
       method: 'DELETE'
     });
 
     if (response.ok) {
-      setMensajeBorrar("Reserva cancelada correctamente")
+      
+       await fetchDatosUsuario(); // esto actualizará userData
+      await fetchReservas();     // esto actualizará reservas
+
+      //setUserData(await fetch(`http://localhost:8080/api/clientes/${user.id}`).then(r => r.json())); // global
+      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userJson = await userData.json();
+      setUser(userJson);
+      localStorage.setItem("user", JSON.stringify(userJson));
+      navigate("/profile");
+      window.location.reload();
       // Eliminar del estado local solo si se borró correctamente en el backend
       //setReservas(prevReservas => prevReservas.filter(r => r.id !== id));
     } else {
@@ -272,6 +282,15 @@ useEffect(() => {
           border-radius: 8px;
           box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
+         .banner {
+          background-image: url('/bannerSkyStay.png');
+          background-size: cover;
+          background-position: center;
+          padding: 2rem;
+          height: 250px;
+          color: white;
+        }
+
 
         .section {
           margin-top: 0.5rem;
@@ -282,7 +301,7 @@ useEffect(() => {
           color: white;
         }
       `}</style>
-
+    <div className="banner">
       <h2>Bienvenido, {userData.username}</h2>
       <p>Email: {userData.mail}</p>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
@@ -303,6 +322,7 @@ useEffect(() => {
   </button>
 </div>
       <p>Cartera: {userData.sueldo}€</p>
+    </div>
       <div className="section">
         {!mostrarFormularioCartera ? (
     <button
@@ -600,7 +620,7 @@ useEffect(() => {
     <li key={idx}>
       {'Hotel: ' + r.nombreHotel + ' - Número habitación: ' + r.numeroHabitacion + ' - Entrada: ' + r.entryDate + ' - Salida: ' + r.exitDate}
       <button
-        onClick={() => {console.log("Botón clicado");cancelarReserva(r.id)} }
+        onClick={() => {cancelarReserva(r.id)} }
         style={{
           padding: "0.5rem 1rem",
           backgroundColor: "red",
@@ -613,7 +633,6 @@ useEffect(() => {
       >
         Cancelar Reserva
       </button>
-      {mensajeBorrar && <p style={{ color: "white", marginTop: "0.5rem" }}>{mensajeBorrar}</p>}
     </li>
   ))}
 </ul>
