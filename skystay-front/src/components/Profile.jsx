@@ -287,8 +287,10 @@ useEffect(() => {
           background-size: cover;
           background-position: center;
           padding: 2rem;
-          height: 250px;
+          height: 200px;
+          width: 700px;
           color: white;
+          border-radius: 5px;
         }
 
 
@@ -305,7 +307,7 @@ useEffect(() => {
         }
       `}</style>
     <div className="banner">
-      <div className="linea" style={{ display: "flex", gap: "3rem", alignItems: "center" }}>
+      <div className="linea" style={{ display: "flex", gap: "3rem", alignItems: "center", marginTop: "-3rem" }}>
   <h2>Bienvenido, {userData.username}</h2>
   <p>Cartera: {userData.sueldo}€</p>
   <p>Email: {userData.mail}</p>
@@ -337,7 +339,7 @@ useEffect(() => {
       onClick={() => setMostrarFormularioCartera(true)}
       style={{
         padding: "0.5rem 1rem",
-        backgroundColor: "#8e44ad",
+        backgroundColor: "#228B22",
         color: "#fff",
         border: "none",
         borderRadius: "5px",
@@ -513,7 +515,7 @@ useEffect(() => {
       onClick={() => setMostrarFormularioReserva(true)}
       style={{
         padding: "0.5rem 1rem",
-        backgroundColor: "#8e44ad",
+        backgroundColor: "#4b0082",
         color: "#fff",
         border: "none",
         borderRadius: "5px",

@@ -61,6 +61,11 @@ public class AdminController {
         this.adminRepository.save(admin);
         return ResponseEntity.ok(admin);
     }
+    //Info del admin
+    @GetMapping("/administradores/{username}")
+    public ResponseEntity<Admin> infoAdmin(@PathVariable String username){
+        return ResponseEntity.ok(this.adminRepository.findByUsername(username));
+    }
 
     //Filtro de busqueda queda mejorarlo
     @GetMapping("/buscarCliente/{palabra}")

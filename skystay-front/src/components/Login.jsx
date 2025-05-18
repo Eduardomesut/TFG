@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login({ setUser }) {
+function Login({ setUser, setAdmin }) {
   const [user, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -22,12 +22,31 @@ function Login({ setUser }) {
       localStorage.setItem("user", JSON.stringify(userJson));
       navigate("/profile");
     } else {
-      alert("Credenciales incorrectas");
+      alert("Credenciales de cliente incorrectas");
+    }
+  };
+
+  const handleAdminLogin = async () => {
+    const response = await fetch("http://localhost:8080/api/administradores/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user, password }),
+    });
+
+    const success = await response.json();
+    if (success) {
+      const adminData = await fetch(`http://localhost:8080/api/administradores/${user}`);
+      const adminJson = await adminData.json();
+      setAdmin(adminJson);
+      localStorage.setItem("admin", JSON.stringify(adminJson));
+      navigate("/admin");
+    } else {
+      alert("Credenciales de administrador incorrectas");
     }
   };
 
   const handleBack = () => {
-    navigate("/"); 
+    navigate("/");
   };
 
   return (
@@ -85,10 +104,19 @@ function Login({ setUser }) {
           border-radius: 8px;
           cursor: pointer;
           transition: background-color 0.3s;
+          margin-top: 0.5rem;
         }
 
         form button:hover {
           background-color: #1c5d87;
+        }
+
+        .admin-button {
+          background-color: #8e44ad;
+        }
+
+        .admin-button:hover {
+          background-color: #6c3483;
         }
 
         .back-button {
@@ -123,7 +151,8 @@ function Login({ setUser }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Entrar</button>
+        <button type="submit">Entrar como Cliente</button>
+        <button type="button" className="admin-button" onClick={handleAdminLogin}>Entrar como Admin</button>
       </form>
     </>
   );
