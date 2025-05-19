@@ -36,9 +36,9 @@ function Admin({ admin, setAdmin }) {
             {clientes.map((cliente) => (
               <tr key={cliente.id}>
                 <td style={tdStyle}>{cliente.id}</td>
-                <td style={tdStyle}>{cliente.nombre}</td>
-                <td style={tdStyle}>{cliente.email}</td>
-                <td style={tdStyle}>{cliente.saldo}</td>
+                <td style={tdStyle}>{cliente.name}</td>
+                <td style={tdStyle}>{cliente.mail}</td>
+                <td style={tdStyle}>{cliente.sueldo}</td>
               </tr>
             ))}
           </tbody>
