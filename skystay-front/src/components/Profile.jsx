@@ -251,7 +251,7 @@ useEffect(() => {
           padding: 2rem;
           border-radius: 10px;
           max-width: 1200px;
-          width:800px;
+          width:1700px;
           
           margin: 4rem auto;
           box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -288,7 +288,7 @@ useEffect(() => {
           background-position: center;
           padding: 2rem;
           height: 200px;
-          width: 700px;
+          width: 900px;
           color: white;
           border-radius: 5px;
         }
@@ -307,7 +307,7 @@ useEffect(() => {
         }
       `}</style>
     <div className="banner">
-      <div className="linea" style={{ display: "flex", gap: "3rem", alignItems: "center", marginTop: "-3rem" }}>
+      <div className="linea" style={{ display: "flex", gap: "6rem", alignItems: "center", marginTop: "-3rem" }}>
   <h2>Bienvenido, {userData.username}</h2>
   <p>Cartera: {userData.sueldo}€</p>
   <p>Email: {userData.mail}</p>
@@ -315,15 +315,26 @@ useEffect(() => {
   <p style={{ marginRight: 8 }}>Puntos: {userData.points}</p>
   <button
     onClick={() => navigate("/canjear", { state: { user } })}
-    style={{
-      padding: "0.5rem 1rem",
-      backgroundColor: "#2980b9",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-      marginRight: 350
-    }}
+          style={{
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#42a5f5", // verde más elegante
+    color: "#fff",
+    border: "1px solidrgb(156, 20, 20)",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#1565c0";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#42a5f5";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
   >
     Canjear Recompensa
   </button>
@@ -336,18 +347,31 @@ useEffect(() => {
       <div className="section">
         {!mostrarFormularioCartera ? (
     <button
-      onClick={() => setMostrarFormularioCartera(true)}
-      style={{
-        padding: "0.5rem 1rem",
-        backgroundColor: "#228B22",
-        color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer"
-      }}
-    >
-      Añadir dinero
-    </button>
+  onClick={() => setMostrarFormularioCartera(true)}
+  style={{
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#2E8B57", // verde más elegante
+    color: "#fff",
+    border: "1px solid #2E8B57",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#246b45";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#2E8B57";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
+>
+  Añadir dinero
+</button>
+
   ) : (
     <div>
   <h3>Modificar saldo</h3>
@@ -367,13 +391,25 @@ useEffect(() => {
   <button
     onClick={handleModificarSaldo}
     style={{
-      padding: "0.5rem 1rem",
-      backgroundColor: "#27ae60",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer"
-    }}
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#2E8B57", // verde más elegante
+    color: "#fff",
+    border: "1px solid #2E8B57",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#246b45";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#2E8B57";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
   >
     Aplicar
   </button>
@@ -382,14 +418,25 @@ useEffect(() => {
           setMostrarFormularioCartera(false);        
         }}
         style={{
-          padding: "0.5rem 1rem",
-          backgroundColor: "#ccc",
-          color: "#333",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginLeft: "0.5rem"
-        }}
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#d9534f", // verde más elegante
+    color: "#fff",
+    border: "1px solidrgb(156, 20, 20)",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#c62828";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#d9534f";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
       >
         Cancelar
       </button>
@@ -402,14 +449,26 @@ useEffect(() => {
   {!mostrarFormularioAmigo ? (
     <button
       onClick={() => setMostrarFormularioAmigo(true)}
-      style={{
-        padding: "0.5rem 1rem",
-        backgroundColor: "#8e44ad",
-        color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer"
-      }}
+            style={{
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#9c27b0", // verde más elegante
+    color: "#fff",
+    border: "1px solidrgb(156, 20, 20)",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#6a1b9a";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#9c27b0";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
     >
       Añadir amigo
     </button>
@@ -430,13 +489,25 @@ useEffect(() => {
       <button
         onClick={handleAgregarAmigo}
         style={{
-          padding: "0.5rem 1rem",
-          backgroundColor: "#8e44ad",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#2E8B57", // verde más elegante
+    color: "#fff",
+    border: "1px solid #2E8B57",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#246b45";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#2E8B57";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
       >
         Confirmar
       </button>
@@ -446,15 +517,26 @@ useEffect(() => {
           setUsernameAmigo("");
           setMensajeAmigo("");
         }}
-        style={{
-          padding: "0.5rem 1rem",
-          backgroundColor: "#ccc",
-          color: "#333",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginLeft: "0.5rem"
-        }}
+            style={{
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#d9534f", // verde más elegante
+    color: "#fff",
+    border: "1px solidrgb(156, 20, 20)",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#c62828";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#d9534f";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
       >
         Cancelar
       </button>
@@ -471,14 +553,26 @@ useEffect(() => {
       }
       setMostrarAmigos(!mostrarAmigos);
     }}
-    style={{
-      padding: "0.5rem 1rem",
-      backgroundColor: "#3498db",
-      color: "#fff",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer"
-    }}
+           style={{
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#42a5f5", // verde más elegante
+    color: "#fff",
+    border: "1px solidrgb(156, 20, 20)",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#1565c0";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#42a5f5";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
   >
     {mostrarAmigos ? "Ocultar amigos" : "Amigos"}
   </button>
@@ -513,14 +607,26 @@ useEffect(() => {
   {!mostrarFormularioReserva ? (
     <button
       onClick={() => setMostrarFormularioReserva(true)}
-      style={{
-        padding: "0.5rem 1rem",
-        backgroundColor: "#4b0082",
-        color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer"
-      }}
+               style={{
+    padding: "0.75rem 1.5rem",
+    backgroundColor: "#ff7043", // verde más elegante
+    color: "#fff",
+    border: "1px solidrgb(156, 20, 20)",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "500",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "all 0.3s ease-in-out"
+  }}
+  onMouseOver={e => {
+    e.currentTarget.style.backgroundColor = "#f4511e";
+    e.currentTarget.style.boxShadow = "0 6px 12px rgba(0, 0, 0, 0.2)";
+  }}
+  onMouseOut={e => {
+    e.currentTarget.style.backgroundColor = "#ff7043";
+    e.currentTarget.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+  }}
     >
       Añadir reserva
     </button>
