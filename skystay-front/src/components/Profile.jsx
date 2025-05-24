@@ -112,6 +112,7 @@ const fetchAmigos = async () => {
 };
 
 
+
 const fetchReservas = async () => {
   const res = await fetch(`http://localhost:8080/api/clientes/${user.username}/reservas`);
   const data = await res.json();
@@ -312,6 +313,23 @@ useEffect(() => {
   object-fit: cover;
   filter: brightness(0.8); /* oscurece un poco para mejor contraste del texto */
 }
+  .sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: #0A3D62;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 60px;
+  margin-bottom: 30px;
+}
+
+.logo {
+  height: 150px; /* ajusta según tu imagen */
+}
 
 .overlay-text {
   position: absolute;
@@ -340,6 +358,56 @@ useEffect(() => {
           color: white;
         }
       `}</style>
+      <header class="sticky-header">
+  <img src="/logobannersky.png" alt="Logo" class="logo"/>
+  <div style={{ marginLeft: "auto", display: "flex", gap: "1rem" }}>
+    <button
+      onClick={() => setMostrarFormularioReserva(true)}
+      style={{
+        padding: "0.5rem 1rem",
+        backgroundColor: "#1abc9c",
+        color: "#fff",
+        border: "none",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontSize: "1rem",
+        fontWeight: "bold",
+        transition: "all 0.3s ease-in-out"
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.backgroundColor = "#16a085";
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.backgroundColor = "#1abc9c";
+      }}
+    >
+      Añadir reserva
+    </button>
+
+    <button
+      onClick={handleLogout}
+      style={{
+        padding: "0.5rem 1rem",
+        backgroundColor: "#e74c3c",
+        color: "#fff",
+        border: "none",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontSize: "1rem",
+        fontWeight: "bold",
+        transition: "all 0.3s ease-in-out"
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.backgroundColor = "#c0392b";
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.backgroundColor = "#e74c3c";
+      }}
+    >
+      Cerrar sesión
+    </button>
+  </div>
+</header>
       <div>
     <div className="banner">
       <div className="linea" style={{ display: "flex", gap: "6rem", alignItems: "center", marginTop: "-3rem" }}>
