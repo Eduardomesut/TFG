@@ -292,6 +292,40 @@ useEffect(() => {
           color: white;
           border-radius: 5px;
         }
+          .video-container {
+  position: relative;
+  width: 100%;
+  height: 300px; /* o ajusta según lo que necesites */
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  object-fit: cover;
+  filter: brightness(0.8); /* oscurece un poco para mejor contraste del texto */
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
+}
+
 
 
         .section {
@@ -306,6 +340,7 @@ useEffect(() => {
           color: white;
         }
       `}</style>
+      <div>
     <div className="banner">
       <div className="linea" style={{ display: "flex", gap: "6rem", alignItems: "center", marginTop: "-3rem" }}>
   <h2>Bienvenido, {userData.username}</h2>
@@ -341,9 +376,10 @@ useEffect(() => {
 </div>
 </div>
 
- 
+ </div>
       
     </div>
+    <div style={{ display: "flex", gap: "3rem", alignItems: "center", marginTop: "1rem", flexWrap: "wrap" }}>
       <div className="section">
         {!mostrarFormularioCartera ? (
     <button
@@ -602,6 +638,7 @@ useEffect(() => {
     </div>
   )}
 </div>
+</div>
 
   <div className="section">
   {!mostrarFormularioReserva ? (
@@ -754,6 +791,22 @@ useEffect(() => {
 </ul>
 
       </div>
+      <div class="video-container">
+  <video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="background-video"
+>
+    <source src="/skystayvideo.mp4" type="video/mp4" />
+    Tu navegador no soporta videos HTML5.
+  </video>
+  <div class="overlay-text">
+    Disfrute de sus vacaciones con <strong>SkyStay</strong>
+  </div>
+</div>
+
     </div>
   );
 }
