@@ -316,7 +316,7 @@ useEffect(() => {
   <button
     onClick={() => navigate("/canjear", { state: { user } })}
           style={{
-    padding: "0.75rem 1.5rem",
+    padding: "0.50rem 1.0rem",
     backgroundColor: "#42a5f5", // verde más elegante
     color: "#fff",
     border: "1px solidrgb(156, 20, 20)",
