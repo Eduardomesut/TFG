@@ -298,6 +298,7 @@ useEffect(() => {
   width: 100%;
   height: 300px; /* o ajusta según lo que necesites */
   overflow: hidden;
+  border-radius: 5px;
 }
 
 .background-video {
@@ -362,7 +363,9 @@ useEffect(() => {
   <img src="/logobannersky.png" alt="Logo" class="logo"/>
   <div style={{ marginLeft: "auto", display: "flex", gap: "1rem" }}>
     <button
-      onClick={() => setMostrarFormularioReserva(true)}
+      onClick={() => {setMostrarFormularioReserva(true);
+        document.getElementById("seccion-reserva")?.scrollIntoView({ behavior: "smooth" });
+      }}
       style={{
         padding: "0.5rem 1rem",
         backgroundColor: "#1abc9c",
@@ -708,7 +711,7 @@ useEffect(() => {
 </div>
 </div>
 
-  <div className="section">
+  <div className="section" id="seccion-reserva">
   {!mostrarFormularioReserva ? (
     <button
       onClick={() => setMostrarFormularioReserva(true)}
