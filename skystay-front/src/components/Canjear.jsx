@@ -9,7 +9,7 @@ function Canjear() {
   const user = location.state?.user;
 
   const fetchUserData = () => {
-    fetch(`http://localhost:8080/api/clientes/${user.username}`)
+    fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user.username}`)
       .then((res) => {
         if (!res.ok) throw new Error("No se pudo obtener la información del usuario");
         return res.json();
@@ -19,7 +19,7 @@ function Canjear() {
   };
 
   const canjearRecompensa = (recompensa) => {
-    fetch(`http://localhost:8080/api/clientes/${user.id}/reward/${recompensa.id}`, {
+    fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user.id}/reward/${recompensa.id}`, {
       method: "POST",
     })
       .then((res) => {
@@ -43,7 +43,7 @@ function Canjear() {
     if (!user) return;
 
     // Cargar recompensas
-    fetch("http://localhost:8080/api/recompensas")
+    fetch("https://tfg-5ljt.onrender.com/api/recompensas")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error al obtener las recompensas");

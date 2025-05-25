@@ -8,7 +8,7 @@ function Login({ setUser, setAdmin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:8080/api/clientes/login", {
+    const response = await fetch("https://tfg-5ljt.onrender.com/api/clientes/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user, password }),
@@ -16,7 +16,7 @@ function Login({ setUser, setAdmin }) {
 
     const success = await response.json();
     if (success) {
-      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userData = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user}`);
       const userJson = await userData.json();
       setUser(userJson);
       localStorage.setItem("user", JSON.stringify(userJson));
@@ -27,7 +27,7 @@ function Login({ setUser, setAdmin }) {
   };
 
   const handleAdminLogin = async () => {
-    const response = await fetch("http://localhost:8080/api/administradores/login", {
+    const response = await fetch("https://tfg-5ljt.onrender.com/api/administradores/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user, password }),
@@ -35,7 +35,7 @@ function Login({ setUser, setAdmin }) {
 
     const success = await response.json();
     if (success) {
-      const adminData = await fetch(`http://localhost:8080/api/administradores/${user}`);
+      const adminData = await fetch(`https://tfg-5ljt.onrender.com/api/administradores/${user}`);
       const adminJson = await adminData.json();
       setAdmin(adminJson);
       localStorage.setItem("admin", JSON.stringify(adminJson));

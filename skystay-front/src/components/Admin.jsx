@@ -8,7 +8,7 @@ function Admin({ admin, setAdmin }) {
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/clientes")
+    axios.get("https://tfg-5ljt.onrender.com/api/clientes")
       .then((response) => {
         setClientes(response.data);
         setClientesFiltrados(response.data); // Inicialmente muestra todos

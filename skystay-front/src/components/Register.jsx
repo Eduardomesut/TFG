@@ -20,8 +20,8 @@ function Register() {
 
       const apiUrl =
         userType === "administrador"
-          ? "http://localhost:8080/api/administradores"
-          : "http://localhost:8080/api/clientes";
+          ? "https://tfg-5ljt.onrender.com/api/administradores"
+          : "https://tfg-5ljt.onrender.com/api/clientes";
 
       const response = await fetch(apiUrl, {
         method: "POST",

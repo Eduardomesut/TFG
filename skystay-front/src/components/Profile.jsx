@@ -38,7 +38,7 @@ function Profile({ user, setUser }) {
   //const [userReset, setUsername] = useState("");
 
 const fetchDatosUsuario = async () => {
-  const res = await fetch(`http://localhost:8080/api/clientes/${user.username}`);
+  const res = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user.username}`);
   const data = await res.json();
   setUserData(data);
 };
@@ -55,7 +55,7 @@ const handleAgregarAmigo = async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:8080/api/clientes/${user.id}/amigo/${usernameAmigo}`, {
+    const res = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user.id}/amigo/${usernameAmigo}`, {
       method: "PUT"
     });
 
@@ -76,7 +76,7 @@ const handleAgregarAmigo = async () => {
 };
 const handleModificarSaldo = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/clientes/${user.id}/saldo/${cantidadSaldo}`, {
+    const res = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user.id}/saldo/${cantidadSaldo}`, {
       method: "PUT"
     });
 
@@ -99,7 +99,7 @@ const handleModificarSaldo = async () => {
 
 const fetchAmigos = async () => {
   try {
-    const res = await fetch(`http://localhost:8080/api/clientes/${user.id}/amigos`);
+    const res = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user.id}/amigos`);
     if (res.ok) {
       const data = await res.json();
       setAmigos(data);
@@ -114,7 +114,7 @@ const fetchAmigos = async () => {
 
 
 const fetchReservas = async () => {
-  const res = await fetch(`http://localhost:8080/api/clientes/${user.username}/reservas`);
+  const res = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user.username}/reservas`);
   const data = await res.json();
   setReservas(data);
 };
@@ -124,7 +124,7 @@ useEffect(() => {
   fetchDatosUsuario();
   fetchReservas();
   const fetchHoteles = async () => {
-    const res = await fetch(`http://localhost:8080/api/hoteles`);
+    const res = await fetch(`https://tfg-5ljt.onrender.com/api/hoteles`);
     const data = await res.json();
     setHoteles(data);
   };
@@ -136,7 +136,7 @@ useEffect(() => {
     const hotelId = e.target.value;
     setHotelSeleccionado(hotelId);
 
-    const res = await fetch(`http://localhost:8080/api/habitaciones/${hotelId}`);
+    const res = await fetch(`https://tfg-5ljt.onrender.com/api/habitaciones/${hotelId}`);
     const data = await res.json();
     setHabitaciones(data);
   };
@@ -154,7 +154,7 @@ useEffect(() => {
   const cancelarReserva = async (id) => {
     
   try {
-    const response = await fetch(`http://localhost:8080/api/clientes/reserva/borrar/${id}`, {
+    const response = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/reserva/borrar/${id}`, {
       method: 'DELETE'
     });
 
@@ -164,7 +164,7 @@ useEffect(() => {
       await fetchReservas();     // esto actualizará reservas
 
       //setUserData(await fetch(`http://localhost:8080/api/clientes/${user.id}`).then(r => r.json())); // global
-      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userData = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user}`);
       const userJson = await userData.json();
       setUser(userJson);
       localStorage.setItem("user", JSON.stringify(userJson));
@@ -201,7 +201,7 @@ useEffect(() => {
     
     
     const res = await fetch(
-      `http://localhost:8080/api/clientes/${user.id}/${habitacionSeleccionada.id}/reserva`,
+      `https://tfg-5ljt.onrender.com/api/clientes/${user.id}/${habitacionSeleccionada.id}/reserva`,
       {
         method: "POST",
         headers: {
@@ -224,7 +224,7 @@ useEffect(() => {
       await fetchReservas();     // esto actualizará reservas
 
       //setUserData(await fetch(`http://localhost:8080/api/clientes/${user.id}`).then(r => r.json())); // global
-      const userData = await fetch(`http://localhost:8080/api/clientes/${user}`);
+      const userData = await fetch(`https://tfg-5ljt.onrender.com/api/clientes/${user}`);
       const userJson = await userData.json();
       setUser(userJson);
       localStorage.setItem("user", JSON.stringify(userJson));
