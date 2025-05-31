@@ -7,11 +7,15 @@ function Admin({ admin, setAdmin }) {
   const [filtro, setFiltro] = useState("");
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
+  const [recompensa, setRecompensa] = useState({ nombre: "", descripcion: "", puntos: "" });
+  const [mensajeRecompensa, setMensajeRecompensa] = useState("");
+  const [mostrarFormularioRecompensa, setMostrarFormularioRecompensa] = useState(false);
+
   useEffect(() => {
     axios.get("https://tfg-5ljt.onrender.com/api/clientes")
       .then((response) => {
         setClientes(response.data);
-        setClientesFiltrados(response.data); // Inicialmente muestra todos
+        setClientesFiltrados(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener los clientes:", error);
@@ -23,6 +27,18 @@ function Admin({ admin, setAdmin }) {
       cliente.name.toLowerCase().startsWith(filtro.toLowerCase())
     );
     setClientesFiltrados(resultado);
+  };
+
+  const handleCrearRecompensa = () => {
+    axios.post("https://tfg-5ljt.onrender.com/api/crearRecompensa", recompensa)
+      .then((res) => {
+        setMensajeRecompensa("Recompensa creada con éxito.");
+        setRecompensa({ nombre: "", descripcion: "", puntos: "" });
+      })
+      .catch((err) => {
+        console.error("Error al crear la recompensa:", err);
+        setMensajeRecompensa("Error al crear la recompensa.");
+      });
   };
 
   return (
@@ -42,6 +58,47 @@ function Admin({ admin, setAdmin }) {
         <button onClick={handleBuscar} style={{ padding: "8px 16px" }}>Buscar</button>
       </div>
 
+      {/* Botón para mostrar formulario de recompensa */}
+      <div style={{ marginBottom: "20px" }}>
+        <button onClick={() => setMostrarFormularioRecompensa(!mostrarFormularioRecompensa)} style={{ padding: "8px 16px", marginRight: "10px" }}>
+          {mostrarFormularioRecompensa ? "Cerrar formulario" : "Añadir Recompensa"}
+        </button>
+      </div>
+
+      {/* Formulario para añadir recompensa */}
+      {mostrarFormularioRecompensa && (
+        <div style={{ backgroundColor: "#eee", padding: "15px", borderRadius: "8px", marginBottom: "20px", color: "#000" }}>
+          <h3>Nueva Recompensa</h3>
+          <input
+            type="text"
+            placeholder="Nombre"
+            value={recompensa.nombre}
+            onChange={(e) => setRecompensa({ ...recompensa, nombre: e.target.value })}
+            style={{ padding: "8px", margin: "5px", width: "200px" }}
+          />
+          <input
+            type="text"
+            placeholder="Descripción"
+            value={recompensa.descripcion}
+            onChange={(e) => setRecompensa({ ...recompensa, descripcion: e.target.value })}
+            style={{ padding: "8px", margin: "5px", width: "200px" }}
+          />
+          <input
+            type="number"
+            placeholder="Puntos"
+            value={recompensa.puntos}
+            onChange={(e) => setRecompensa({ ...recompensa, puntos: e.target.value })}
+            style={{ padding: "8px", margin: "5px", width: "200px" }}
+          />
+          <br />
+          <button onClick={handleCrearRecompensa} style={{ padding: "8px 16px", marginTop: "10px" }}>
+            Guardar Recompensa
+          </button>
+          {mensajeRecompensa && <p style={{ marginTop: "10px" }}>{mensajeRecompensa}</p>}
+        </div>
+      )}
+
+      {/* Tabla de clientes */}
       {clientesFiltrados.length === 0 ? (
         <p>No hay clientes que coincidan con la búsqueda.</p>
       ) : (
