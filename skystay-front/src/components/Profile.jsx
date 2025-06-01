@@ -367,20 +367,20 @@ useEffect(() => {
 
   .sticky-header {
     flex-direction: column;
-    height: 200px;
+    height: 70px;
     gap: 0.5rem;
     
     text-align: center;
   }
 
   .logo {
-    height: 70px;
+    height: 100px;
     width: auto;
   }
 
   .banner {
     width: 100%;
-    height: auto;
+    height: 300px;
     padding: 1rem;
     text-align: center;
     background-position: top;
