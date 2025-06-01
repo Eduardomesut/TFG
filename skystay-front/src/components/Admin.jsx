@@ -7,7 +7,7 @@ function Admin({ admin, setAdmin }) {
   const [filtro, setFiltro] = useState("");
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
-  const [recompensa, setRecompensa] = useState({ nombre: "", descripcion: "", puntos: "" });
+  const [recompensa, setRecompensa] = useState({ name: "", description: "", points: "", stock: "" });
   const [mensajeRecompensa, setMensajeRecompensa] = useState("");
   const [mostrarFormularioRecompensa, setMostrarFormularioRecompensa] = useState(false);
 
@@ -33,7 +33,7 @@ function Admin({ admin, setAdmin }) {
     axios.post("https://tfg-5ljt.onrender.com/api/crearRecompensa", recompensa)
       .then((res) => {
         setMensajeRecompensa("Recompensa creada con éxito.");
-        setRecompensa({ nombre: "", descripcion: "", puntos: "" });
+        setRecompensa({ name: "", description: "", points: "", stock: "" });
       })
       .catch((err) => {
         console.error("Error al crear la recompensa:", err);
@@ -72,22 +72,29 @@ function Admin({ admin, setAdmin }) {
           <input
             type="text"
             placeholder="Nombre"
-            value={recompensa.nombre}
-            onChange={(e) => setRecompensa({ ...recompensa, nombre: e.target.value })}
+            value={recompensa.name}
+            onChange={(e) => setRecompensa({ ...recompensa, name: e.target.value })}
             style={{ padding: "8px", margin: "5px", width: "200px" }}
           />
           <input
             type="text"
             placeholder="Descripción"
-            value={recompensa.descripcion}
-            onChange={(e) => setRecompensa({ ...recompensa, descripcion: e.target.value })}
+            value={recompensa.description}
+            onChange={(e) => setRecompensa({ ...recompensa, description: e.target.value })}
             style={{ padding: "8px", margin: "5px", width: "200px" }}
           />
           <input
             type="number"
             placeholder="Puntos"
-            value={recompensa.puntos}
-            onChange={(e) => setRecompensa({ ...recompensa, puntos: e.target.value })}
+            value={recompensa.points}
+            onChange={(e) => setRecompensa({ ...recompensa, points: e.target.value })}
+            style={{ padding: "8px", margin: "5px", width: "200px" }}
+          />
+          <input
+            type="number"
+            placeholder="Stock"
+            value={recompensa.stock}
+            onChange={(e) => setRecompensa({ ...recompensa, stock: e.target.value })}
             style={{ padding: "8px", margin: "5px", width: "200px" }}
           />
           <br />
