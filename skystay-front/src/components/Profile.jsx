@@ -367,20 +367,19 @@ useEffect(() => {
 
   .sticky-header {
     flex-direction: column;
-    height: 70px;
+    height: 50px; /* Reducido de 70px a 50px */
     gap: 0.5rem;
-    
     text-align: center;
   }
 
   .logo {
-    height: 100px;
+    height: 70px; /* Reducido de 100px a 70px */
     width: auto;
   }
 
   .banner {
     width: 100%;
-    height: 300px;
+    height: 180px; /* Reducido de 300px a 180px */
     padding: 1rem;
     text-align: center;
     background-position: top;
@@ -410,6 +409,7 @@ useEffect(() => {
     margin-bottom: 0.5rem;
   }
 }
+
 
       `}</style>
       <header class="sticky-header">
