@@ -358,6 +358,58 @@ useEffect(() => {
           font-weight: bold;
           color: white;
         }
+          @media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 1rem;
+    margin: 2rem auto;
+  }
+
+  .sticky-header {
+    flex-direction: column;
+    height: auto;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .logo {
+    height: 100px;
+    width: auto;
+  }
+
+  .banner {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    text-align: center;
+    background-position: top;
+  }
+
+  .linea {
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0 !important;
+  }
+
+  .section {
+    width: 100%;
+  }
+
+  .overlay-text {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+  }
+
+  .video-container {
+    height: 200px;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
       `}</style>
       <header class="sticky-header">
   <img src="/logobannersky.png" alt="Logo" class="logo"/>
