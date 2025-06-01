@@ -7,7 +7,7 @@ function Admin({ admin, setAdmin }) {
   const [filtro, setFiltro] = useState("");
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
-  const [recompensa, setRecompensa] = useState({ name: "", description: "", points: "", stock: "" });
+  const [recompensa, setRecompensa] = useState({ name: "", description: "", points: "", Stock: "" });
   const [mensajeRecompensa, setMensajeRecompensa] = useState("");
   const [mostrarFormularioRecompensa, setMostrarFormularioRecompensa] = useState(false);
 
@@ -33,7 +33,7 @@ function Admin({ admin, setAdmin }) {
     axios.post("https://tfg-5ljt.onrender.com/api/crearRecompensa", recompensa)
       .then((res) => {
         setMensajeRecompensa("Recompensa creada con éxito.");
-        setRecompensa({ name: "", description: "", points: "", stock: "" });
+        setRecompensa({ name: "", description: "", points: "", Stock: "" });
       })
       .catch((err) => {
         console.error("Error al crear la recompensa:", err);
@@ -93,8 +93,8 @@ function Admin({ admin, setAdmin }) {
           <input
             type="number"
             placeholder="Stock"
-            value={recompensa.stock}
-            onChange={(e) => setRecompensa({ ...recompensa, stock: e.target.value })}
+            value={recompensa.Stock}
+            onChange={(e) => setRecompensa({ ...recompensa, Stock: e.target.value })}
             style={{ padding: "8px", margin: "5px", width: "200px" }}
           />
           <br />
