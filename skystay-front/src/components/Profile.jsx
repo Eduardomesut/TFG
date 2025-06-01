@@ -367,19 +367,36 @@ useEffect(() => {
 
   .sticky-header {
     flex-direction: column;
-    height: 50px; /* Reducido de 70px a 50px */
+    height: auto; /* Ajusta automáticamente la altura según el contenido */
+    padding: 0.5rem 1rem;
     gap: 0.5rem;
     text-align: center;
+    align-items: center;
   }
 
   .logo {
-    height: 70px; /* Reducido de 100px a 70px */
+    height: 70px;
     width: auto;
+  }
+
+  .sticky-header .top-bar {
+    display: flex;
+    flex-wrap: wrap; /* Que se adapten en varias filas si es necesario */
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sticky-header .top-bar > * {
+    flex: 1 1 auto;
+    min-width: 100px;
+    max-width: 150px;
+    font-size: 0.875rem; /* Más pequeño para caber mejor */
   }
 
   .banner {
     width: 100%;
-    height: 180px; /* Reducido de 300px a 180px */
+    height: 180px;
     padding: 1rem;
     text-align: center;
     background-position: top;
@@ -411,10 +428,11 @@ useEffect(() => {
 }
 
 
+
       `}</style>
       <header class="sticky-header">
   <img src="/logobannersky.png" alt="Logo" class="logo"/>
-  <div style={{ marginLeft: "auto", display: "flex", gap: "1rem" }}>
+  <div class="top-bar" style={{ marginLeft: "auto", display: "flex", gap: "1rem" }}>
     <button
       onClick={() => {setMostrarFormularioReserva(true);
         document.getElementById("seccion-reserva")?.scrollIntoView({ behavior: "smooth" });
